@@ -30,14 +30,6 @@ class EditTaskFragment : Fragment() {
 
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        binding.buttonSecond.setOnClickListener {
-            findNavController().navigate(R.id.action_EditTaskFragment_to_MainFragment)
-        }
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
