@@ -7,22 +7,22 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="net.msalt.doublecheck.FirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
+        android:name="net.msalt.doublecheck.MainFragment"
+        android:label="@string/main_fragment_label"
+        tools:layout="@layout/main_frag">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
+            android:id="@+id/action_MainFragment_to_EditTaskFragment"
             app:destination="@id/SecondFragment" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="net.msalt.doublecheck.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+        android:name="net.msalt.doublecheck.edittask.EditTaskFragment"
+        android:label="@string/edit_task_fragment_label"
+        tools:layout="@layout/edit_task_frag">
 
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
+            android:id="@+id/action_EditTaskFragment_to_MainFragment"
             app:destination="@id/FirstFragment" />
     </fragment>
 </navigation>

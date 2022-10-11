@@ -1,4 +1,4 @@
-package net.msalt.doublecheck
+package net.msalt.doublecheck.edittask
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,14 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import net.msalt.doublecheck.databinding.FragmentFirstBinding
+import net.msalt.doublecheck.R
+import net.msalt.doublecheck.databinding.EditTaskFragBinding
 
 /**
- * A simple [Fragment] subclass as the default destination in the navigation.
+ * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class FirstFragment : Fragment() {
+class EditTaskFragment : Fragment() {
 
-    private var _binding: FragmentFirstBinding? = null
+    private var _binding: EditTaskFragBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -24,19 +25,17 @@ class FirstFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding = FragmentFirstBinding.inflate(inflater, container, false)
-        binding.fab.setOnClickListener { view ->
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
-        }
+        _binding = EditTaskFragBinding.inflate(inflater, container, false)
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        binding.buttonFirst.setOnClickListener {
-//            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
-//        }
+        binding.buttonSecond.setOnClickListener {
+            findNavController().navigate(R.id.action_EditTaskFragment_to_MainFragment)
+        }
     }
 
     override fun onDestroyView() {

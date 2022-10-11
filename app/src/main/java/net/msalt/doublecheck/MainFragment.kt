@@ -6,14 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import net.msalt.doublecheck.databinding.FragmentSecondBinding
+import net.msalt.doublecheck.R
+import net.msalt.doublecheck.databinding.MainFragBinding
 
-/**
- * A simple [Fragment] subclass as the second destination in the navigation.
- */
-class SecondFragment : Fragment() {
+class MainFragment : Fragment() {
 
-    private var _binding: FragmentSecondBinding? = null
+    private var _binding: MainFragBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -24,17 +22,11 @@ class SecondFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding = FragmentSecondBinding.inflate(inflater, container, false)
-        return binding.root
-
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        binding.buttonSecond.setOnClickListener {
-            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
+        _binding = MainFragBinding.inflate(inflater, container, false)
+        binding.fab.setOnClickListener {
+            findNavController().navigate(R.id.action_MainFragment_to_EditTaskFragment)
         }
+        return binding.root
     }
 
     override fun onDestroyView() {
