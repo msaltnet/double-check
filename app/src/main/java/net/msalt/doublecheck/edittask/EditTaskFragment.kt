@@ -1,6 +1,7 @@
 package net.msalt.doublecheck.edittask
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import net.msalt.doublecheck.R
+import net.msalt.doublecheck.data.CheckItem
 import net.msalt.doublecheck.databinding.EditTaskFragBinding
 
 /**
@@ -18,6 +20,8 @@ class EditTaskFragment : Fragment() {
     private val viewModel by viewModels<EditTaskViewModel>()
 
     private var _binding: EditTaskFragBinding? = null
+
+    private lateinit var listAdapter: CheckItemListAdapter
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -33,8 +37,29 @@ class EditTaskFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Set the lifecycle owner to the lifecycle of the view
+        binding.lifecycleOwner = this.viewLifecycleOwner
+        setupListAdapter()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun setupListAdapter() {
+        if (viewModel != null) {
+            listAdapter = CheckItemListAdapter(viewModel)
+            binding.checkitemList.adapter = listAdapter
+            binding.button.setOnClickListener(){
+                viewModel.items.add(CheckItem())
+                listAdapter.notifyItemInserted(viewModel.items.size - 1)
+            }
+        } else {
+            Log.w("JSM_TEST", "ViewModel not initialized when attempting to set up adapter.")
+        }
     }
 }
