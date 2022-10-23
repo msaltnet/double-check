@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import net.msalt.doublecheck.R
 import net.msalt.doublecheck.databinding.EditTaskFragBinding
@@ -13,6 +14,8 @@ import net.msalt.doublecheck.databinding.EditTaskFragBinding
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
 class EditTaskFragment : Fragment() {
+
+    private val viewModel by viewModels<EditTaskViewModel>()
 
     private var _binding: EditTaskFragBinding? = null
 
@@ -26,8 +29,8 @@ class EditTaskFragment : Fragment() {
     ): View? {
 
         _binding = EditTaskFragBinding.inflate(inflater, container, false)
+        binding.viewmodel = viewModel
         return binding.root
-
     }
 
     override fun onDestroyView() {
