@@ -29,11 +29,16 @@
                 android:padding="@dimen/edit_task_title_padding">
 
                 <EditText
-                    android:id="@+id/editTextTextPersonName"
+                    android:id="@+id/taskTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="textPersonName"
+                    android:background="@null"
+                    android:hint="@string/title_hint"
+                    android:maxLength="80"
+                    android:textStyle="bold"
+                    android:singleLine="true"
+                    android:scrollHorizontally="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:text="@={viewmodel.title}" />
 
                 <androidx.recyclerview.widget.RecyclerView

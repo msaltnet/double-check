@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import net.msalt.doublecheck.R
 import net.msalt.doublecheck.data.CheckItem
@@ -28,8 +29,8 @@ class EditTaskFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
 
         _binding = EditTaskFragBinding.inflate(inflater, container, false)
@@ -42,6 +43,9 @@ class EditTaskFragment : Fragment() {
 
         // Set the lifecycle owner to the lifecycle of the view
         binding.lifecycleOwner = this.viewLifecycleOwner
+        viewModel.title.observe(this.viewLifecycleOwner) {
+            Log.d("JSM", "Changed ${viewModel.title.value}")
+        }
         setupListAdapter()
     }
 
@@ -54,8 +58,13 @@ class EditTaskFragment : Fragment() {
         if (viewModel != null) {
             listAdapter = CheckItemListAdapter(viewModel)
             binding.checkitemList.adapter = listAdapter
-            binding.button.setOnClickListener(){
-                viewModel.items.add(CheckItem())
+            binding.button.setOnClickListener() {
+                val item = CheckItem()
+                item.contents.value = item.id
+                item.contents.observe(this.viewLifecycleOwner) {
+                    Log.d("JSM", "Changed item contents ${item.id} : ${item.contents.value}")
+                }
+                viewModel.items.add(item)
                 listAdapter.notifyItemInserted(viewModel.items.size - 1)
             }
         } else {

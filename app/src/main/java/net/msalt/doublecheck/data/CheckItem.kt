@@ -1,3 +1,6 @@
 package net.msalt.doublecheck.data
 
-data class CheckItem(var contents: String = "", var id: String = "", var checked: Boolean = false)
+import androidx.lifecycle.MutableLiveData
+import java.util.*
+
+data class CheckItem(var contents: MutableLiveData<String> = MutableLiveData<String>(""), val id: String = UUID.randomUUID().toString(), var checked: Boolean = false)
