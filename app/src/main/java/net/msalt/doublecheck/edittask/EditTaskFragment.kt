@@ -47,6 +47,11 @@ class EditTaskFragment : Fragment() {
             Log.d("JSM", "Changed ${viewModel.title.value}")
         }
         setupListAdapter()
+        binding.fab2.setOnClickListener {
+            repeat(999) {
+                addNewItem()
+            }
+        }
     }
 
     override fun onDestroyView() {
@@ -59,16 +64,20 @@ class EditTaskFragment : Fragment() {
             listAdapter = CheckItemListAdapter(viewModel)
             binding.checkitemList.adapter = listAdapter
             binding.button.setOnClickListener() {
-                val item = CheckItem()
-                item.contents.value = item.id
-                item.contents.observe(this.viewLifecycleOwner) {
-                    Log.d("JSM", "Changed item contents ${item.id} : ${item.contents.value}")
-                }
-                viewModel.items.add(item)
-                listAdapter.notifyItemInserted(viewModel.items.size - 1)
+                addNewItem()
             }
         } else {
             Log.w("JSM_TEST", "ViewModel not initialized when attempting to set up adapter.")
         }
+    }
+
+    private fun addNewItem() {
+        val item = CheckItem()
+        item.contents.value = item.id
+        item.contents.observe(this.viewLifecycleOwner) {
+            Log.d("JSM", "Changed item contents ${item.id} : ${item.contents.value}")
+        }
+        viewModel.items.add(item)
+        listAdapter?.notifyItemInserted(viewModel.items.size - 1)
     }
 }
