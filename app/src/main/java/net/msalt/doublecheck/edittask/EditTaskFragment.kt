@@ -54,9 +54,9 @@ class EditTaskFragment : Fragment() {
             binding.checkitemList.adapter = listAdapter
             binding.button.setOnClickListener() {
                 val item = CheckItem()
-                item.contents.value = item.id
-                item.contents.observe(this.viewLifecycleOwner) {
-                    Log.d("JSM", "Changed item contents ${item.id} : ${item.contents.value}")
+                item.contents_data.value = item.id
+                item.contents_data.observe(this.viewLifecycleOwner) {
+                    Log.d("JSM", "Changed item contents ${item.id} : ${item.contents_data.value}")
                 }
                 viewModel.items.add(item)
                 listAdapter.notifyItemInserted(viewModel.items.size - 1)

@@ -7,9 +7,9 @@ import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import java.util.*
 
-@Entity(tableName = "CheckItem")
-data class CheckItem(
-        @ColumnInfo(name = "contents") var contents: String = "",
-        @Ignore var contents_data: MutableLiveData<String> = MutableLiveData<String>(""),
+@Entity(tableName = "Bunch")
+data class Bunch(
+        @ColumnInfo(name = "title") var title: String = "",
+        @Ignore var title_data: MutableLiveData<String> = MutableLiveData<String>(""),
         @PrimaryKey @ColumnInfo(name = "id") val id: String = UUID.randomUUID().toString(),
-        @ColumnInfo(name = "checked") var checked: Boolean = false)
+        @ColumnInfo(name = "category") var category: String = "")
