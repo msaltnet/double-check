@@ -13,6 +13,6 @@ interface CheckItemDao {
     @Delete
     fun delete(checkItem: CheckItem)
 
-    @Query("SELECT * FROM CheckItem")
+    @Query("SELECT * FROM checkitem")
     fun getAll(): List<CheckItem>
 }

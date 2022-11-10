@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import net.msalt.doublecheck.DoubleCheckApplication
 import net.msalt.doublecheck.data.CheckItem
 import net.msalt.doublecheck.databinding.EditTaskFragBinding
 
@@ -26,7 +27,6 @@ class EditTaskFragment : Fragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-
         _binding = EditTaskFragBinding.inflate(inflater, container, false)
         binding.viewmodel = viewModel
         return binding.root
@@ -34,6 +34,8 @@ class EditTaskFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val app = requireActivity().application as DoubleCheckApplication
+        app.database.bunchDao().getAll()
 
         // Set the lifecycle owner to the lifecycle of the view
         binding.lifecycleOwner = this.viewLifecycleOwner

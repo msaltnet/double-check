@@ -5,6 +5,6 @@ import androidx.room.*
 @Dao
 interface BunchWithCheckItemDao {
     @Transaction
-    @Query("SELECT * FROM BunchWithCheckItem")
+    @Query("SELECT * FROM checkitem")
     fun getAll(): List<BunchWithCheckItem>
 }

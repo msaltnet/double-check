@@ -13,6 +13,6 @@ interface BunchDao {
     @Delete
     fun delete(bunch: Bunch)
 
-    @Query("SELECT * FROM Bunch")
+    @Query("SELECT * FROM bunch")
     fun getAll(): List<Bunch>
 }
