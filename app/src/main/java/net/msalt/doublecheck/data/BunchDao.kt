@@ -8,11 +8,11 @@ import androidx.room.Query
 @Dao
 interface BunchDao {
     @Insert
-    fun insert(bunch: Bunch)
+    suspend fun insert(bunch: Bunch)
 
     @Delete
-    fun delete(bunch: Bunch)
+    suspend fun delete(bunch: Bunch)
 
     @Query("SELECT * FROM bunch")
-    fun getAll(): List<Bunch>
+    suspend fun getAll(): List<Bunch>
 }

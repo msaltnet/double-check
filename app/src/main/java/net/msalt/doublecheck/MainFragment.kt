@@ -1,12 +1,11 @@
 package net.msalt.doublecheck
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import net.msalt.doublecheck.R
 import net.msalt.doublecheck.databinding.MainFragBinding
 
 class MainFragment : Fragment() {
@@ -18,13 +17,14 @@ class MainFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
 
         _binding = MainFragBinding.inflate(inflater, container, false)
         binding.fab.setOnClickListener {
-            findNavController().navigate(R.id.action_MainFragment_to_EditTaskFragment)
+            val action = MainFragmentDirections.actionMainFragmentToEditTaskFragment("TEST")
+            findNavController().navigate(action)
         }
         return binding.root
     }

@@ -8,11 +8,11 @@ import androidx.room.Query
 @Dao
 interface CheckItemDao {
     @Insert
-    fun insert(checkItem: CheckItem)
+    suspend fun insert(checkItem: CheckItem)
 
     @Delete
-    fun delete(checkItem: CheckItem)
+    suspend fun delete(checkItem: CheckItem)
 
     @Query("SELECT * FROM checkitem")
-    fun getAll(): List<CheckItem>
+    suspend fun getAll(): List<CheckItem>
 }
