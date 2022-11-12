@@ -7,9 +7,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import net.msalt.doublecheck.data.CheckItem
 import net.msalt.doublecheck.databinding.CheckItemBinding
-import net.msalt.doublecheck.databinding.EditTaskFragBinding
 
-class CheckItemListAdapter(private val viewModel: EditTaskViewModel) :
+class CheckItemListAdapter(private val viewModel: EditBunchViewModel) :
         ListAdapter<CheckItem, CheckItemListAdapter.ViewHolder>(TaskDiffCallback()) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -24,10 +23,10 @@ class CheckItemListAdapter(private val viewModel: EditTaskViewModel) :
         return viewModel.items.size
     }
 
-    class ViewHolder private constructor(val binding: CheckItemBinding) :
+    class ViewHolder private constructor(private val binding: CheckItemBinding) :
             RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(viewModel: EditTaskViewModel, item: CheckItem) {
+        fun bind(viewModel: EditBunchViewModel, item: CheckItem) {
             binding.viewmodel = viewModel
             binding.item = item
             binding.executePendingBindings()

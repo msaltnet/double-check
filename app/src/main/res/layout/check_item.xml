@@ -11,7 +11,7 @@
 
         <variable
             name="viewmodel"
-            type="net.msalt.doublecheck.edittask.EditTaskViewModel" />
+            type="net.msalt.doublecheck.edittask.EditBunchViewModel" />
     </data>
 
     <LinearLayout

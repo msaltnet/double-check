@@ -7,13 +7,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import net.msalt.doublecheck.DoubleCheckViewModelFactory
 import net.msalt.doublecheck.data.CheckItem
 import net.msalt.doublecheck.databinding.EditTaskFragBinding
 import timber.log.Timber
 
 class EditBunchFragment : Fragment() {
 
-    private val viewModel by viewModels<EditTaskViewModel>()
+    private val viewModel by viewModels<EditBunchViewModel> { DoubleCheckViewModelFactory }
 
     private val args: EditBunchFragmentArgs by navArgs()
 
@@ -31,7 +32,8 @@ class EditBunchFragment : Fragment() {
     ): View? {
         _binding = EditTaskFragBinding.inflate(inflater, container, false)
         binding.viewmodel = viewModel
-        Timber.d( "Bunch ID: ${args.bunchId}")
+        Timber.d("Bunch ID: ${args.bunchId}")
+        viewModel.start(args.bunchId)
         return binding.root
     }
 
