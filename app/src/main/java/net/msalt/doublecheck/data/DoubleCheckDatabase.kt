@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import kotlinx.coroutines.CoroutineScope
 
-@Database(entities = [Bunch::class, CheckItem::class, BunchWithCheckItem::class], version = 1, exportSchema = false)
+@Database(entities = [Bunch::class, CheckItem::class], version = 1, exportSchema = false)
 abstract class DoubleCheckDatabase : RoomDatabase() {
     abstract fun bunchDao(): BunchDao
     abstract fun checkItemDao(): CheckItemDao
@@ -18,7 +18,6 @@ abstract class DoubleCheckDatabase : RoomDatabase() {
 
         fun getDatabase(
                 context: Context,
-                scope: CoroutineScope
         ): DoubleCheckDatabase {
 
             return INSTANCE ?: synchronized(this) {

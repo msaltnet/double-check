@@ -51,20 +51,16 @@ class EditTaskFragment : Fragment() {
     }
 
     private fun setupListAdapter() {
-        if (viewModel != null) {
-            listAdapter = CheckItemListAdapter(viewModel)
-            binding.checkitemList.adapter = listAdapter
-            binding.button.setOnClickListener() {
-                val item = CheckItem()
-                item.contents_data.value = item.id
-                item.contents_data.observe(this.viewLifecycleOwner) {
-                    Log.d("JSM", "Changed item contents ${item.id} : ${item.contents_data.value}")
-                }
-                viewModel.items.add(item)
-                listAdapter.notifyItemInserted(viewModel.items.size - 1)
+        listAdapter = CheckItemListAdapter(viewModel)
+        binding.checkitemList.adapter = listAdapter
+        binding.button.setOnClickListener() {
+            val item = CheckItem()
+            item.contents_data.value = item.id
+            item.contents_data.observe(this.viewLifecycleOwner) {
+                Log.d("JSM", "Changed item contents ${item.id} : ${item.contents_data.value}")
             }
-        } else {
-            Log.w("JSM_TEST", "ViewModel not initialized when attempting to set up adapter.")
+            viewModel.items.add(item)
+            listAdapter.notifyItemInserted(viewModel.items.size - 1)
         }
     }
 }

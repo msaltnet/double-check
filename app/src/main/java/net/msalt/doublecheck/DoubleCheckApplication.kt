@@ -7,10 +7,9 @@ import kotlinx.coroutines.SupervisorJob
 import net.msalt.doublecheck.data.DoubleCheckDatabase
 
 class DoubleCheckApplication : Application() {
-    val applicationScope = CoroutineScope(SupervisorJob())
     val database by lazy {
         Log.d("JSM_TEST", "database is Created!")
-        DoubleCheckDatabase.getDatabase(this, applicationScope)
+        DoubleCheckDatabase.getDatabase(this)
     }
 
     override fun onCreate() {
