@@ -1,19 +1,26 @@
 package net.msalt.doublecheck
 
 import android.app.Application
-import android.util.Log
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
 import net.msalt.doublecheck.data.DoubleCheckDatabase
+import timber.log.Timber
 
 class DoubleCheckApplication : Application() {
     val database by lazy {
-        Log.d("JSM_TEST", "database is Created!")
+        Timber.d("database is Created!")
         DoubleCheckDatabase.getDatabase(this)
     }
 
     override fun onCreate() {
         super.onCreate()
-        Log.d("JSM_TEST", "Application is Created!")
+        if (BuildConfig.DEBUG) {
+            Timber.plant(TimberDebugTree())
+        }
+        Timber.d("Application is Created!")
+    }
+}
+
+class TimberDebugTree : Timber.DebugTree() {
+    override fun createStackElementTag(element: StackTraceElement): String? {
+        return "${element.fileName}:${element.lineNumber}#${element.methodName}"
     }
 }

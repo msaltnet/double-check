@@ -1,7 +1,6 @@
 package net.msalt.doublecheck.edittask
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import net.msalt.doublecheck.data.CheckItem
 import net.msalt.doublecheck.databinding.EditTaskFragBinding
+import timber.log.Timber
 
 class EditBunchFragment : Fragment() {
 
@@ -31,7 +31,7 @@ class EditBunchFragment : Fragment() {
     ): View? {
         _binding = EditTaskFragBinding.inflate(inflater, container, false)
         binding.viewmodel = viewModel
-        Log.d("JSM", "Bunch ID: ${args.bunchId}")
+        Timber.d( "Bunch ID: ${args.bunchId}")
         return binding.root
     }
 
@@ -41,7 +41,7 @@ class EditBunchFragment : Fragment() {
         // Set the lifecycle owner to the lifecycle of the view
         binding.lifecycleOwner = this.viewLifecycleOwner
         viewModel.title.observe(this.viewLifecycleOwner) {
-            Log.d("JSM", "Changed ${viewModel.title.value}")
+            Timber.d("Changed ${viewModel.title.value}")
         }
         setupListAdapter()
     }
@@ -58,7 +58,7 @@ class EditBunchFragment : Fragment() {
             val item = CheckItem()
             item.contents_data.value = item.id
             item.contents_data.observe(this.viewLifecycleOwner) {
-                Log.d("JSM", "Changed item contents ${item.id} : ${item.contents_data.value}")
+                Timber.d("Changed item contents ${item.id} : ${item.contents_data.value}")
             }
             viewModel.items.add(item)
             listAdapter.notifyItemInserted(viewModel.items.size - 1)
