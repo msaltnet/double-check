@@ -1,4 +1,4 @@
-package net.msalt.doublecheck.edittask
+package net.msalt.doublecheck.editbunch
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

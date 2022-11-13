@@ -1,4 +1,4 @@
-package net.msalt.doublecheck.edittask
+package net.msalt.doublecheck.editbunch
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import net.msalt.doublecheck.DoubleCheckViewModelFactory
 import net.msalt.doublecheck.data.CheckItem
-import net.msalt.doublecheck.databinding.EditTaskFragBinding
+import net.msalt.doublecheck.databinding.EditBunchFragBinding
 import timber.log.Timber
 
 class EditBunchFragment : Fragment() {
@@ -18,7 +18,7 @@ class EditBunchFragment : Fragment() {
 
     private val args: EditBunchFragmentArgs by navArgs()
 
-    private var _binding: EditTaskFragBinding? = null
+    private var _binding: EditBunchFragBinding? = null
 
     private lateinit var listAdapter: CheckItemListAdapter
 
@@ -30,7 +30,7 @@ class EditBunchFragment : Fragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        _binding = EditTaskFragBinding.inflate(inflater, container, false)
+        _binding = EditBunchFragBinding.inflate(inflater, container, false)
         binding.viewmodel = viewModel
         Timber.d("Bunch ID: ${args.bunchId}")
         viewModel.start(args.bunchId)

@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewmodel.CreationExtras
-import net.msalt.doublecheck.edittask.EditBunchViewModel
+import net.msalt.doublecheck.editbunch.EditBunchViewModel
 
 @Suppress("UNCHECKED_CAST")
 val DoubleCheckViewModelFactory = object : ViewModelProvider.Factory {

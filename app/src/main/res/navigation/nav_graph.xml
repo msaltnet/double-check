@@ -12,17 +12,17 @@
         tools:layout="@layout/main_frag">
 
         <action
-            android:id="@+id/action_MainFragment_to_EditTaskFragment"
+            android:id="@+id/action_MainFragment_to_EditBunchFragment"
             app:destination="@id/edit_bunch_fragment_dest" />
     </fragment>
     <fragment
         android:id="@+id/edit_bunch_fragment_dest"
-        android:name="net.msalt.doublecheck.edittask.EditBunchFragment"
-        android:label="@string/edit_task_fragment_label"
-        tools:layout="@layout/edit_task_frag">
+        android:name="net.msalt.doublecheck.editbunch.EditBunchFragment"
+        android:label="@string/edit_bunch_fragment_label"
+        tools:layout="@layout/edit_bunch_frag">
 
         <action
-            android:id="@+id/action_EditTaskFragment_to_MainFragment"
+            android:id="@+id/action_EditBunchFragment_to_MainFragment"
             app:destination="@id/main_fragment_dest" />
         <argument
             android:name="bunchId"

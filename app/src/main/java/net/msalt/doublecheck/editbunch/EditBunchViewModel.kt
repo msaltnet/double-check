@@ -1,6 +1,5 @@
-package net.msalt.doublecheck.edittask
+package net.msalt.doublecheck.editbunch
 
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineScope

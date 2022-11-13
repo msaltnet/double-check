@@ -23,7 +23,7 @@ class MainFragment : Fragment() {
 
         _binding = MainFragBinding.inflate(inflater, container, false)
         binding.fab.setOnClickListener {
-            val action = MainFragmentDirections.actionMainFragmentToEditTaskFragment("")
+            val action = MainFragmentDirections.actionMainFragmentToEditBunchFragment("")
             findNavController().navigate(action)
         }
         return binding.root
