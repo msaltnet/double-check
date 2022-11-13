@@ -3,16 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/main_fragment_dest">
+    app:startDestination="@id/bunch_list_fragment_dest">
 
     <fragment
-        android:id="@+id/main_fragment_dest"
-        android:name="net.msalt.doublecheck.MainFragment"
-        android:label="@string/main_fragment_label"
-        tools:layout="@layout/main_frag">
+        android:id="@+id/bunch_list_fragment_dest"
+        android:name="net.msalt.doublecheck.bunchlist.BunchListFragment"
+        android:label="@string/bunch_list_fragment_label"
+        tools:layout="@layout/bunch_list_frag">
 
         <action
-            android:id="@+id/action_MainFragment_to_EditBunchFragment"
+            android:id="@+id/action_BunchListFragment_to_EditBunchFragment"
             app:destination="@id/edit_bunch_fragment_dest" />
     </fragment>
     <fragment
@@ -22,8 +22,8 @@
         tools:layout="@layout/edit_bunch_frag">
 
         <action
-            android:id="@+id/action_EditBunchFragment_to_MainFragment"
-            app:destination="@id/main_fragment_dest" />
+            android:id="@+id/action_EditBunchFragment_to_BunchListFragment"
+            app:destination="@id/bunch_list_fragment_dest" />
         <argument
             android:name="bunchId"
             app:argType="string"

@@ -17,7 +17,7 @@ class EditBunchViewModel(private val database: DoubleCheckDatabase) : ViewModel(
         if (bunchId == "") {
             // create new bunch
             CoroutineScope(Dispatchers.IO).launch {
-                database.bunchDao().insert(Bunch())
+//                database.bunchDao().insert(Bunch())
                 val all = database.bunchDao().getAll()
                 for (i in all)
                     Timber.d("Bunch: ${i.id}: ${i.title}")

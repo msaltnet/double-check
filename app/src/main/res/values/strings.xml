@@ -3,6 +3,6 @@
     <string name="action_settings">Settings</string>
     <string name="title_hint">Check List For</string>
 
-    <string name="main_fragment_label">Main Fragment</string>
+    <string name="bunch_list_fragment_label">Bunch List Fragment</string>
     <string name="edit_bunch_fragment_label">Edit Bunch Fragment</string>
 </resources>

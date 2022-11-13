@@ -6,7 +6,7 @@
 
         <variable
             name="item"
-            type="net.msalt.doublecheck.data.CheckItem" />
+            type="net.msalt.doublecheck.data.Bunch" />
     </data>
 
     <LinearLayout
@@ -18,22 +18,13 @@
         android:paddingBottom="@dimen/list_item_padding"
         android:paddingTop="@dimen/list_item_padding" >
 
-        <CheckBox
-            android:id="@+id/complete_checkbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:checked="@{item.checked}" />
-
-        <EditText
-            android:id="@+id/content_text"
+        <TextView
+            android:id="@+id/bunch_title_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:maxLength="140"
             android:singleLine="true"
             android:scrollHorizontally="true"
-            android:text="@={item.contents_data}" />
+            android:text="@={item.id}" />
     </LinearLayout>
 </layout>

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewmodel.CreationExtras
+import net.msalt.doublecheck.bunchlist.BunchListViewModel
 import net.msalt.doublecheck.editbunch.EditBunchViewModel
 
 @Suppress("UNCHECKED_CAST")
@@ -15,6 +16,8 @@ val DoubleCheckViewModelFactory = object : ViewModelProvider.Factory {
                 when {
                     isAssignableFrom(EditBunchViewModel::class.java) ->
                         EditBunchViewModel(database)
+                    isAssignableFrom(BunchListViewModel::class.java) ->
+                        BunchListViewModel(database)
                     else ->
                         throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
                 }

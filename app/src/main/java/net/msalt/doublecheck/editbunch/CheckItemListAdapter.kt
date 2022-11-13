@@ -9,10 +9,10 @@ import net.msalt.doublecheck.data.CheckItem
 import net.msalt.doublecheck.databinding.CheckItemBinding
 
 class CheckItemListAdapter(private val viewModel: EditBunchViewModel) :
-        ListAdapter<CheckItem, CheckItemListAdapter.ViewHolder>(TaskDiffCallback()) {
+        ListAdapter<CheckItem, CheckItemListAdapter.ViewHolder>(CheckItemDiffCallback()) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(viewModel, viewModel.items[position])
+        holder.bind(viewModel.items[position])
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -26,8 +26,7 @@ class CheckItemListAdapter(private val viewModel: EditBunchViewModel) :
     class ViewHolder private constructor(private val binding: CheckItemBinding) :
             RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(viewModel: EditBunchViewModel, item: CheckItem) {
-            binding.viewmodel = viewModel
+        fun bind(item: CheckItem) {
             binding.item = item
             binding.executePendingBindings()
         }
@@ -43,7 +42,7 @@ class CheckItemListAdapter(private val viewModel: EditBunchViewModel) :
     }
 }
 
-class TaskDiffCallback : DiffUtil.ItemCallback<CheckItem>() {
+class CheckItemDiffCallback : DiffUtil.ItemCallback<CheckItem>() {
     override fun areItemsTheSame(oldItem: CheckItem, newItem: CheckItem): Boolean {
         return oldItem.id == newItem.id
     }
