@@ -7,19 +7,24 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import net.msalt.doublecheck.data.Bunch
-import net.msalt.doublecheck.data.CheckItem
 import net.msalt.doublecheck.databinding.BunchCardBinding
 import timber.log.Timber
 
-class BunchCardListAdapter(private val viewModel: BunchListViewModel) :
+class BunchCardListAdapter(private val viewModel: BunchListViewModel, private val clickListener: OnItemClickListener) :
         ListAdapter<Bunch, BunchCardListAdapter.ViewHolder>(BunchCardDiffCallback()) {
 
+    interface OnItemClickListener {
+        fun onItemClick(item: Bunch)
+    }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(viewModel.items.value?.get(position) ?: Bunch("Temp Bunch"))
+        viewModel.items.value?.let {
+            holder.bind(it[position])
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.from(parent)
+        return ViewHolder.from(parent, clickListener)
     }
 
     class ViewHolder private constructor(private val binding: BunchCardBinding) :
@@ -31,10 +36,15 @@ class BunchCardListAdapter(private val viewModel: BunchListViewModel) :
         }
 
         companion object {
-            fun from(parent: ViewGroup): ViewHolder {
+            fun from(parent: ViewGroup, clickListener: OnItemClickListener): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = BunchCardBinding.inflate(layoutInflater, parent, false)
 
+                binding.root.setOnClickListener {
+                    binding.item?.let {
+                        clickListener?.onItemClick(it)
+                    }
+                }
                 return ViewHolder(binding)
             }
         }
