@@ -13,17 +13,30 @@ import timber.log.Timber
 class EditBunchViewModel(private val database: DoubleCheckDatabase) : ViewModel() {
     val title = MutableLiveData("")
     val items = ArrayList<CheckItem>()
+    var bunch: Bunch? = null
+
     fun start(bunchId: String) {
         if (bunchId == "") {
-            // create new bunch
             CoroutineScope(Dispatchers.IO).launch {
-//                database.bunchDao().insert(Bunch())
+                Bunch().apply {
+                    bunch = this
+                    database.bunchDao().insert(this)
+                }
+                // debug temp
                 val all = database.bunchDao().getAll()
                 for (i in all)
                     Timber.d("Bunch: ${i.id}: ${i.title}")
             }
         } else {
-            // load bunch
+            CoroutineScope(Dispatchers.Default).launch {
+                bunch = database.bunchDao().getById(bunchId)
+                bunch?.let {
+                    title.postValue(it.title)
+
+                    // debug temp
+                    Timber.d("Bunch: ${it.id}: ${it.title}")
+                }
+            }
         }
     }
 }
