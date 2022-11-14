@@ -52,6 +52,7 @@ class BunchListFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        Timber.d("Bunch List Fragment Destroy")
     }
 
     private fun setupListAdapter() {
@@ -65,3 +66,4 @@ class BunchListFragment : Fragment() {
         binding.bunchList.adapter = listAdapter
     }
 }
+

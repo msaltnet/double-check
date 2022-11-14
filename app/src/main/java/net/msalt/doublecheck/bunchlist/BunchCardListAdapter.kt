@@ -42,7 +42,7 @@ class BunchCardListAdapter(private val viewModel: BunchListViewModel, private va
 
                 binding.root.setOnClickListener {
                     binding.item?.let {
-                        clickListener?.onItemClick(it)
+                        clickListener.onItemClick(it)
                     }
                 }
                 return ViewHolder(binding)
@@ -61,7 +61,7 @@ class BunchCardDiffCallback : DiffUtil.ItemCallback<Bunch>() {
     }
 }
 
-@BindingAdapter("app:bunchitems")
+@BindingAdapter("bunchitems")
 fun setItems(listView: RecyclerView, items: List<Bunch>?) {
     items?.let {
         (listView.adapter as BunchCardListAdapter).submitList(items)

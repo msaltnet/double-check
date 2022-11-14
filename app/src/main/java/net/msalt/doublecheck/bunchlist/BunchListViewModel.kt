@@ -1,11 +1,11 @@
 package net.msalt.doublecheck.bunchlist
 
-import androidx.lifecycle.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import net.msalt.doublecheck.data.Bunch
-import net.msalt.doublecheck.data.CheckItem
 import net.msalt.doublecheck.data.DoubleCheckDatabase
 import timber.log.Timber
 

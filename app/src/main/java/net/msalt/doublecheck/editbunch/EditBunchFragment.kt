@@ -50,6 +50,7 @@ class EditBunchFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        Timber.d("Edit Task Fragment Destroy")
         _binding = null
     }
 
