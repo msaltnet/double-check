@@ -1,14 +1,11 @@
 package net.msalt.doublecheck.data
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface BunchDao {
-    @Insert
-    suspend fun insert(bunch: Bunch)
+    @Upsert
+    suspend fun upsert(bunch: Bunch)
 
     @Delete
     suspend fun delete(bunch: Bunch)

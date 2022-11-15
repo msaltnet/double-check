@@ -25,6 +25,6 @@
             android:maxLength="140"
             android:singleLine="true"
             android:scrollHorizontally="true"
-            android:text="@={item.id}" />
+            android:text="@{item.title.length() == 0 ? @string/app_name : item.title}" />
     </LinearLayout>
 </layout>

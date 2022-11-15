@@ -23,6 +23,8 @@
 
         <action
             android:id="@+id/action_EditBunchFragment_to_BunchListFragment"
+            app:popUpTo="@id/bunch_list_fragment_dest"
+            app:popUpToInclusive="true"
             app:destination="@id/bunch_list_fragment_dest" />
         <argument
             android:name="bunchId"
