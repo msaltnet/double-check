@@ -87,11 +87,10 @@ class EditBunchFragment : Fragment() {
         binding.checkitemList.adapter = listAdapter
         binding.button.setOnClickListener() {
             val item = CheckItem()
-            item.contents_data.value = item.id
             item.contents_data.observe(this.viewLifecycleOwner) {
-                Timber.d("Changed item contents ${item.id} : ${item.contents_data.value}")
+                Timber.d("Changed item contents ${item.id} : $it")
             }
-            viewModel.items.add(item)
+            viewModel.appendItem(item)
             listAdapter.notifyItemInserted(viewModel.items.size - 1)
         }
     }

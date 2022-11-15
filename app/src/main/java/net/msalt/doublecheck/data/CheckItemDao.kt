@@ -1,14 +1,11 @@
 package net.msalt.doublecheck.data
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface CheckItemDao {
-    @Insert
-    suspend fun insert(checkItem: CheckItem)
+    @Upsert
+    suspend fun upsert(checkItem: CheckItem)
 
     @Delete
     suspend fun delete(checkItem: CheckItem)
