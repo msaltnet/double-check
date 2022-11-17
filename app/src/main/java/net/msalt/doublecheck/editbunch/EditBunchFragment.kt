@@ -89,9 +89,22 @@ class EditBunchFragment : Fragment() {
             val item = CheckItem()
             item.contents_data.observe(this.viewLifecycleOwner) {
                 Timber.d("Changed item contents ${item.id} : $it")
+                viewModel.updateItem(item, UPDATE_DEFERRED_TIME, false)
             }
             viewModel.appendItem(item)
             listAdapter.notifyItemInserted(viewModel.items.size - 1)
+        }
+        viewModel.loaded.observe(this.viewLifecycleOwner) {
+            if (!it)
+                return@observe
+
+            for (item in viewModel.items) {
+                item.contents_data.observe(this.viewLifecycleOwner) {
+                    Timber.d("Changed loaded item contents ${item.id} : $it")
+                    viewModel.updateItem(item, UPDATE_DEFERRED_TIME, false)
+                }
+            }
+            listAdapter.notifyDataSetChanged()
         }
     }
 

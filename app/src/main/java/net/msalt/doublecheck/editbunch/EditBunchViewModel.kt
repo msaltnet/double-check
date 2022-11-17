@@ -1,5 +1,6 @@
 package net.msalt.doublecheck.editbunch
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,8 +14,12 @@ import timber.log.Timber
 class EditBunchViewModel(private val database: DoubleCheckDatabase) : ViewModel() {
     val title = MutableLiveData("")
     val items = ArrayList<CheckItem>()
+    private val _loaded = MutableLiveData(false)
+    val loaded: LiveData<Boolean> = _loaded
     private lateinit var bunch: Bunch
-    var updateTitleJob: Job? = null
+    private var deferredUpdateTitleJob: Job? = null
+    private var deferredUpdateItemJob: Job? = null
+    private var deferredUpdateItem: CheckItem? = null
 
     fun start(bunchId: String) {
         if (bunchId == "") {
@@ -23,21 +28,19 @@ class EditBunchViewModel(private val database: DoubleCheckDatabase) : ViewModel(
                     bunch = this
                     database.bunchDao().upsert(this)
                 }
-                // debug temp
-                val all = database.bunchDao().getAll()
-                for (i in all)
-                    Timber.d("Bunch: ${i.id}: ${i.title}")
+                _loaded.postValue(true)
             }
         } else {
             CoroutineScope(Dispatchers.Default).launch {
-                database.bunchWithCheckItemDao().get(bunchId)?.let {
-                    bunch = it.bunch
-                    title.postValue(it.bunch.title)
-                    // debug temp
-                    Timber.d("Bunch: ${it.bunch.id}: ${it.bunch.title}")
-                    for (i in it.checkItems)
-                        Timber.d("Bunch items: ${i.id}: ${i.contents}")
+                val data = database.bunchWithCheckItemDao().get(bunchId)
+                bunch = data.bunch
+                title.postValue(data.bunch.title)
+                for (item in data.checkItems) {
+                    item.contents_data.postValue(item.contents)
+                    items.add(item)
+                    Timber.d("Bunch items: ${item.id}: ${item.contents}")
                 }
+                _loaded.postValue(true)
             }
         }
     }
@@ -50,34 +53,68 @@ class EditBunchViewModel(private val database: DoubleCheckDatabase) : ViewModel(
         }
     }
 
-    fun updateTitle(@NotNull title: String, deferredMs: Long, forced: Boolean) {
-        bunch?.let {
-            if (it.title == title && !forced)
-                return
-            it.title = title
+    fun updateItem(item: CheckItem, deferredMs: Long, forced: Boolean) {
+        if (item.contents == item.contents_data.value && !forced) {
+            return
         }
+        item.contents = item.contents_data.value.toString()
 
-        updateTitleJob?.let {
+        deferredUpdateItemJob?.let {
             if (it.isActive && !it.isCompleted)
                 it.cancel()
         }
 
-        updateTitleJob = viewModelScope.launch(Dispatchers.IO) {
-            Timber.d("START update")
-            delay(deferredMs)
-            bunch?.let {
-                database.bunchDao().upsert(it)
+        deferredUpdateItem?.let {
+            if (it.id == item.id)
+                return@let
+
+            viewModelScope.launch(Dispatchers.IO) {
+                Timber.d("[ITEM Update] START SINGLE")
+                database.checkItemDao().upsert(it)
+                Timber.d("[ITEM Update] END SINGLE")
             }
-            Timber.d("END update")
+        }
+
+        deferredUpdateItemJob = viewModelScope.launch(Dispatchers.IO) {
+            Timber.d("[ITEM Update] START")
+            delay(deferredMs)
+            database.checkItemDao().upsert(item)
+            Timber.d("[ITEM Update] END")
+        }
+        deferredUpdateItem = item
+    }
+
+    fun updateTitle(@NotNull title: String, deferredMs: Long, forced: Boolean) {
+        if (bunch.title == title && !forced)
+            return
+        bunch.title = title
+
+        deferredUpdateTitleJob?.let {
+            if (it.isActive && !it.isCompleted)
+                it.cancel()
+        }
+
+        deferredUpdateTitleJob = viewModelScope.launch(Dispatchers.IO) {
+            Timber.d("[BUNCH UPDATE] START")
+            delay(deferredMs)
+            database.bunchDao().upsert(bunch)
+            Timber.d("[BUNCH UPDATE] END")
         }
     }
 
     fun flushUpdate() {
-        updateTitleJob?.let {
-            if (it.isCompleted)
+        deferredUpdateTitleJob?.let { job ->
+            if (job.isCompleted)
                 return
             title.value?.let {
                 updateTitle(it, 0, true)
+            }
+        }
+        deferredUpdateItemJob?.let { job ->
+            if (job.isCompleted)
+                return
+            deferredUpdateItem?.let {
+                updateItem(it, 0, true)
             }
         }
     }
