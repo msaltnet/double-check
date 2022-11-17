@@ -59,7 +59,7 @@ class BunchListFragment : Fragment() {
         listAdapter = BunchCardListAdapter(viewModel, object : BunchCardListAdapter.OnItemClickListener {
             override fun onItemClick(item: Bunch) {
                 Timber.d("ON CLICK ${item.id}")
-                val action = BunchListFragmentDirections.actionBunchListFragmentToEditBunchFragment(item.id)
+                val action = BunchListFragmentDirections.actionBunchListFragmentToBunchDetailFragment(item.id)
                 findNavController().navigate(action)
             }
         })

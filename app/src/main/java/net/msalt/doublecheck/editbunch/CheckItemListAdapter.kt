@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import net.msalt.doublecheck.data.CheckItem
-import net.msalt.doublecheck.databinding.CheckItemBinding
+import net.msalt.doublecheck.databinding.EditItemBinding
 
 class CheckItemListAdapter(private val viewModel: EditBunchViewModel) :
         ListAdapter<CheckItem, CheckItemListAdapter.ViewHolder>(CheckItemDiffCallback()) {
@@ -23,7 +23,7 @@ class CheckItemListAdapter(private val viewModel: EditBunchViewModel) :
         return viewModel.items.size
     }
 
-    class ViewHolder private constructor(private val binding: CheckItemBinding) :
+    class ViewHolder private constructor(private val binding: EditItemBinding) :
             RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: CheckItem) {
@@ -34,7 +34,7 @@ class CheckItemListAdapter(private val viewModel: EditBunchViewModel) :
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = CheckItemBinding.inflate(layoutInflater, parent, false)
+                val binding = EditItemBinding.inflate(layoutInflater, parent, false)
 
                 return ViewHolder(binding)
             }

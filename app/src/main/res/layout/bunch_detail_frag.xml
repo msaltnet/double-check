@@ -7,14 +7,14 @@
         <import type="android.view.View" />
         <variable
             name="viewmodel"
-            type="net.msalt.doublecheck.editbunch.EditBunchViewModel" />
+            type="net.msalt.doublecheck.bunchdetail.BunchDetailViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".editbunch.EditBunchFragment">
-
+        tools:context=".bunchlist.BunchListFragment"
+        >
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
                 android:orientation="vertical"
                 android:padding="@dimen/edit_task_title_padding">
 
-                <EditText
+                <TextView
                     android:id="@+id/bunchTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -42,18 +42,14 @@
                     android:text="@={viewmodel.title}" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/checkitem_list"
+                    android:id="@+id/bunch_item_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:checkitems="@{viewmodel.items}" />
 
-                <Button
-                    android:id="@+id/button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Button" />
             </LinearLayout>
-
         </androidx.core.widget.NestedScrollView>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

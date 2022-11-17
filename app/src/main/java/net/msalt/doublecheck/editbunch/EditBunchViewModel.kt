@@ -21,27 +21,25 @@ class EditBunchViewModel(private val database: DoubleCheckDatabase) : ViewModel(
     private var deferredUpdateItemJob: Job? = null
     private var deferredUpdateItem: CheckItem? = null
 
+    fun start(newBunch: Bunch) {
+        viewModelScope.launch {
+            bunch = newBunch
+            database.bunchDao().upsert(newBunch)
+            _loaded.value = true
+        }
+    }
+
     fun start(bunchId: String) {
-        if (bunchId == "") {
-            CoroutineScope(Dispatchers.IO).launch {
-                Bunch().apply {
-                    bunch = this
-                    database.bunchDao().upsert(this)
-                }
-                _loaded.postValue(true)
+        viewModelScope.launch {
+            val data = database.bunchWithCheckItemDao().get(bunchId)
+            bunch = data.bunch
+            title.value = data.bunch.title
+            for (item in data.checkItems) {
+                item.contents_data.value = item.contents
+                items.add(item)
+                Timber.d("Bunch items: ${item.id}: ${item.contents}")
             }
-        } else {
-            CoroutineScope(Dispatchers.Default).launch {
-                val data = database.bunchWithCheckItemDao().get(bunchId)
-                bunch = data.bunch
-                title.postValue(data.bunch.title)
-                for (item in data.checkItems) {
-                    item.contents_data.postValue(item.contents)
-                    items.add(item)
-                    Timber.d("Bunch items: ${item.id}: ${item.contents}")
-                }
-                _loaded.postValue(true)
-            }
+            _loaded.value = true
         }
     }
 
@@ -105,14 +103,14 @@ class EditBunchViewModel(private val database: DoubleCheckDatabase) : ViewModel(
     fun flushUpdate() {
         deferredUpdateTitleJob?.let { job ->
             if (job.isCompleted)
-                return
+                return@let
             title.value?.let {
                 updateTitle(it, 0, true)
             }
         }
         deferredUpdateItemJob?.let { job ->
             if (job.isCompleted)
-                return
+                return@let
             deferredUpdateItem?.let {
                 updateItem(it, 0, true)
             }

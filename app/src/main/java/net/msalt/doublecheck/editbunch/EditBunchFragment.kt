@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import net.msalt.doublecheck.DoubleCheckViewModelFactory
 import net.msalt.doublecheck.R
+import net.msalt.doublecheck.data.Bunch
 import net.msalt.doublecheck.data.CheckItem
 import net.msalt.doublecheck.databinding.EditBunchFragBinding
 import timber.log.Timber
@@ -31,6 +32,8 @@ class EditBunchFragment : Fragment() {
 
     private lateinit var navigationLisner: NavController.OnDestinationChangedListener
 
+    private lateinit var bunchId: String
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -41,20 +44,30 @@ class EditBunchFragment : Fragment() {
     ): View? {
         _binding = EditBunchFragBinding.inflate(inflater, container, false)
         binding.viewmodel = viewModel
-        Timber.d("Bunch ID: ${args.bunchId}")
-        viewModel.start(args.bunchId)
+
+        if (args.bunchId == "") {
+            val newBunch = Bunch()
+            viewModel.start(newBunch)
+            bunchId = newBunch.id
+            Timber.d("[Edit] NEW Bunch ID: $bunchId")
+        } else {
+            bunchId = args.bunchId
+            viewModel.start(bunchId)
+            Timber.d("[Edit] Load Bunch ID: $bunchId")
+        }
 
         backBtnCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                Timber.d("handleOnBackPressed")
+                Timber.d("handleOnBackPressed $bunchId")
                 viewModel.flushUpdate()
-                findNavController().navigate(R.id.action_EditBunchFragment_to_BunchListFragment)
+                val action = EditBunchFragmentDirections.actionEditBunchFragmentToBunchDetailFragment(bunchId)
+                findNavController().navigate(action)
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(backBtnCallback)
         navigationLisner = NavController.OnDestinationChangedListener { _, destination, _ ->
-            Timber.d("OnDestinationChangedListener to ${destination.label}")
-            if (destination.id == R.id.bunch_list_fragment_dest)
+            Timber.d("OnDestinationChangedListener to ${destination.label} : ${destination.id}")
+            if (destination.id == R.id.bunch_detail_fragment_dest || destination.id == R.id.bunch_list_fragment_dest)
                 viewModel.flushUpdate()
         }
         findNavController().addOnDestinationChangedListener(navigationLisner)
