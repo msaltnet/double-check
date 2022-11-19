@@ -45,12 +45,14 @@
                     android:id="@+id/checkitem_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/list_item_margin_top"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
                 <Button
                     android:id="@+id/button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/list_item_margin_top"
                     android:text="Button" />
             </LinearLayout>
 

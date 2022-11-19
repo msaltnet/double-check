@@ -45,6 +45,7 @@
                     android:id="@+id/bunch_item_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/list_item_margin_top"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:checkitems="@{viewmodel.items}" />
 
