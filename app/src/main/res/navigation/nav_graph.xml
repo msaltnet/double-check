@@ -12,11 +12,6 @@
         tools:layout="@layout/bunch_list_frag">
 
         <action
-            android:id="@+id/action_BunchListFragment_to_EditBunchFragment"
-            app:popUpTo="@id/edit_bunch_fragment_dest"
-            app:popUpToInclusive="true"
-            app:destination="@id/edit_bunch_fragment_dest" />
-        <action
             android:id="@+id/action_BunchListFragment_to_BunchDetailFragment"
             app:popUpTo="@id/bunch_detail_fragment_dest"
             app:popUpToInclusive="true"
@@ -54,9 +49,5 @@
             app:popUpTo="@id/edit_bunch_fragment_dest"
             app:popUpToInclusive="true"
             app:destination="@id/edit_bunch_fragment_dest" />
-        <argument
-            android:name="bunchId"
-            app:argType="string"
-            android:defaultValue="" />
     </fragment>
 </navigation>

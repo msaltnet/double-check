@@ -28,8 +28,6 @@ class EditBunchFragment : Fragment() {
 
     private lateinit var listAdapter: CheckItemListAdapter
 
-    private lateinit var backBtnCallback: OnBackPressedCallback
-
     private lateinit var navigationLisner: NavController.OnDestinationChangedListener
 
     private lateinit var bunchId: String
@@ -44,30 +42,13 @@ class EditBunchFragment : Fragment() {
     ): View? {
         _binding = EditBunchFragBinding.inflate(inflater, container, false)
         binding.viewmodel = viewModel
+        bunchId = args.bunchId
+        viewModel.start(bunchId)
+        Timber.d("[Edit] Load Bunch ID: $bunchId")
 
-        if (args.bunchId == "") {
-            val newBunch = Bunch()
-            viewModel.start(newBunch)
-            bunchId = newBunch.id
-            Timber.d("[Edit] NEW Bunch ID: $bunchId")
-        } else {
-            bunchId = args.bunchId
-            viewModel.start(bunchId)
-            Timber.d("[Edit] Load Bunch ID: $bunchId")
-        }
-
-        backBtnCallback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                Timber.d("handleOnBackPressed $bunchId")
-                viewModel.flushUpdate()
-                val action = EditBunchFragmentDirections.actionEditBunchFragmentToBunchDetailFragment(bunchId)
-                findNavController().navigate(action)
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(backBtnCallback)
         navigationLisner = NavController.OnDestinationChangedListener { _, destination, _ ->
             Timber.d("OnDestinationChangedListener to ${destination.label} : ${destination.id}")
-            if (destination.id == R.id.bunch_detail_fragment_dest || destination.id == R.id.bunch_list_fragment_dest)
+            if (destination.id == R.id.bunch_detail_fragment_dest)
                 viewModel.flushUpdate()
         }
         findNavController().addOnDestinationChangedListener(navigationLisner)
@@ -90,7 +71,6 @@ class EditBunchFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         Timber.d("Edit Task Fragment Destroy")
-        backBtnCallback.remove()
         findNavController().removeOnDestinationChangedListener(navigationLisner)
         _binding = null
     }

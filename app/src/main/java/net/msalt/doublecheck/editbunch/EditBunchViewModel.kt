@@ -21,14 +21,6 @@ class EditBunchViewModel(private val database: DoubleCheckDatabase) : ViewModel(
     private var deferredUpdateItemJob: Job? = null
     private var deferredUpdateItem: CheckItem? = null
 
-    fun start(newBunch: Bunch) {
-        viewModelScope.launch {
-            bunch = newBunch
-            database.bunchDao().upsert(newBunch)
-            _loaded.value = true
-        }
-    }
-
     fun start(bunchId: String) {
         viewModelScope.launch {
             val data = database.bunchWithCheckItemDao().get(bunchId)

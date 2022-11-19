@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import net.msalt.doublecheck.DoubleCheckViewModelFactory
+import net.msalt.doublecheck.MainActivity
+import net.msalt.doublecheck.R
 import net.msalt.doublecheck.data.Bunch
 import net.msalt.doublecheck.data.CheckItem
 import net.msalt.doublecheck.databinding.BunchListFragBinding
@@ -33,8 +35,9 @@ class BunchListFragment : Fragment() {
     ): View? {
         _binding = BunchListFragBinding.inflate(inflater, container, false)
         binding.fab.setOnClickListener {
-            val action = BunchListFragmentDirections.actionBunchListFragmentToEditBunchFragment("")
-            findNavController().navigate(action)
+            val mainActivity = activity as MainActivity
+            mainActivity.activeBunchId = ""
+            findNavController().navigate(R.id.bunch_detail_fragment_dest)
         }
         return binding.root
     }
@@ -59,8 +62,9 @@ class BunchListFragment : Fragment() {
         listAdapter = BunchCardListAdapter(viewModel, object : BunchCardListAdapter.OnItemClickListener {
             override fun onItemClick(item: Bunch) {
                 Timber.d("ON CLICK ${item.id}")
-                val action = BunchListFragmentDirections.actionBunchListFragmentToBunchDetailFragment(item.id)
-                findNavController().navigate(action)
+                val mainActivity = activity as MainActivity
+                mainActivity.activeBunchId = item.id
+                findNavController().navigate(R.id.bunch_detail_fragment_dest)
             }
         })
         binding.bunchList.adapter = listAdapter

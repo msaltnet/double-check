@@ -10,7 +10,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import net.msalt.doublecheck.DoubleCheckViewModelFactory
+import net.msalt.doublecheck.MainActivity
 import net.msalt.doublecheck.R
+import net.msalt.doublecheck.data.Bunch
 import net.msalt.doublecheck.data.CheckItem
 import net.msalt.doublecheck.databinding.BunchDetailFragBinding
 import net.msalt.doublecheck.editbunch.EditBunchFragment
@@ -20,17 +22,11 @@ class BunchDetailFragment : Fragment() {
 
     private val viewModel by viewModels<BunchDetailViewModel> { DoubleCheckViewModelFactory }
 
-    private val args: BunchDetailFragmentArgs by navArgs()
-
     private var _binding: BunchDetailFragBinding? = null
 
     private lateinit var listAdapter: BunchItemListAdapter
 
-    private lateinit var backBtnCallback: OnBackPressedCallback
-
-    private val bunchId by lazy {
-        args.bunchId
-    }
+    private lateinit var bunchId: String
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -42,16 +38,22 @@ class BunchDetailFragment : Fragment() {
     ): View? {
         _binding = BunchDetailFragBinding.inflate(inflater, container, false)
         binding.viewmodel = viewModel
-        Timber.d("[Detail] Bunch ID: $bunchId")
-        viewModel.start(bunchId)
 
-        backBtnCallback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                Timber.d("handleOnBackPressed")
-                findNavController().navigate(R.id.action_BunchDetailFragment_to_BunchListFragment)
-            }
+        val mainActivity = activity as MainActivity
+
+        if (mainActivity.activeBunchId == "") {
+            val newBunch = Bunch()
+            mainActivity.activeBunchId = newBunch.id
+            bunchId = mainActivity.activeBunchId
+            viewModel.start(newBunch)
+            val action = BunchDetailFragmentDirections.actionBunchDetailFragmentToEditBunchFragment(bunchId)
+            findNavController().navigate(action)
+        } else {
+            bunchId = mainActivity.activeBunchId
+            viewModel.start(bunchId)
         }
-        requireActivity().onBackPressedDispatcher.addCallback(backBtnCallback)
+
+        Timber.d("[Detail] Bunch ID: $bunchId")
         return binding.root
     }
 
@@ -66,7 +68,6 @@ class BunchDetailFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        backBtnCallback.remove()
         Timber.d("Bunch Detail Fragment Destroy")
     }
 

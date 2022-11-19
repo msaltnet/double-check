@@ -19,6 +19,13 @@ class BunchDetailViewModel(private val database: DoubleCheckDatabase) : ViewMode
     val items: LiveData<List<CheckItem>> = _items
     private lateinit var bunch: Bunch
 
+    fun start(newBunch: Bunch) {
+        viewModelScope.launch {
+            bunch = newBunch
+            database.bunchDao().upsert(newBunch)
+        }
+    }
+
     fun start(bunchId: String) {
         viewModelScope.launch {
             val data = database.bunchWithCheckItemDao().get(bunchId)
