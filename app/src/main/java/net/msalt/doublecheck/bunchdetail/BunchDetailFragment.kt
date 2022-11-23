@@ -33,8 +33,8 @@ class BunchDetailFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         _binding = BunchDetailFragBinding.inflate(inflater, container, false)
         binding.viewmodel = viewModel
@@ -46,7 +46,8 @@ class BunchDetailFragment : Fragment() {
             mainActivity.activeBunchId = newBunch.id
             bunchId = mainActivity.activeBunchId
             viewModel.start(newBunch)
-            val action = BunchDetailFragmentDirections.actionBunchDetailFragmentToEditBunchFragment(bunchId)
+            val action =
+                BunchDetailFragmentDirections.actionBunchDetailFragmentToEditBunchFragment(bunchId)
             findNavController().navigate(action)
         } else {
             bunchId = mainActivity.activeBunchId
@@ -72,13 +73,17 @@ class BunchDetailFragment : Fragment() {
     }
 
     private fun setupListAdapter() {
-        listAdapter = BunchItemListAdapter(viewModel, object : BunchItemListAdapter.OnItemClickListener {
-            override fun onItemClick(item: CheckItem) {
-                Timber.d("ON CLICK ${item.id}")
-                val action = BunchDetailFragmentDirections.actionBunchDetailFragmentToEditBunchFragment(bunchId)
-                findNavController().navigate(action)
-            }
-        })
+        listAdapter =
+            BunchItemListAdapter(viewModel, object : BunchItemListAdapter.OnItemClickListener {
+                override fun onItemClick(item: CheckItem) {
+                    Timber.d("ON CLICK ${item.id}")
+                    val action =
+                        BunchDetailFragmentDirections.actionBunchDetailFragmentToEditBunchFragment(
+                            bunchId
+                        )
+                    findNavController().navigate(action)
+                }
+            })
         binding.bunchItemList.adapter = listAdapter
     }
 }

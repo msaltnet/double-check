@@ -10,8 +10,11 @@ import net.msalt.doublecheck.data.CheckItem
 import net.msalt.doublecheck.databinding.DetailItemBinding
 import timber.log.Timber
 
-class BunchItemListAdapter(private val viewModel: BunchDetailViewModel, private val clickListener: OnItemClickListener) :
-        ListAdapter<CheckItem, BunchItemListAdapter.ViewHolder>(BunchItemDiffCallback()) {
+class BunchItemListAdapter(
+    private val viewModel: BunchDetailViewModel,
+    private val clickListener: OnItemClickListener
+) :
+    ListAdapter<CheckItem, BunchItemListAdapter.ViewHolder>(BunchItemDiffCallback()) {
 
     interface OnItemClickListener {
         fun onItemClick(item: CheckItem)
@@ -28,7 +31,7 @@ class BunchItemListAdapter(private val viewModel: BunchDetailViewModel, private 
     }
 
     class ViewHolder private constructor(private val binding: DetailItemBinding) :
-            RecyclerView.ViewHolder(binding.root) {
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: CheckItem) {
             binding.item = item

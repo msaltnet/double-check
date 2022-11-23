@@ -13,6 +13,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import net.msalt.doublecheck.DoubleCheckViewModelFactory
 import net.msalt.doublecheck.R
+import net.msalt.doublecheck.bunchdetail.BunchDetailFragmentDirections
+import net.msalt.doublecheck.bunchdetail.BunchItemListAdapter
 import net.msalt.doublecheck.data.Bunch
 import net.msalt.doublecheck.data.CheckItem
 import net.msalt.doublecheck.databinding.EditBunchFragBinding
@@ -37,8 +39,8 @@ class EditBunchFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         _binding = EditBunchFragBinding.inflate(inflater, container, false)
         binding.viewmodel = viewModel
@@ -76,7 +78,14 @@ class EditBunchFragment : Fragment() {
     }
 
     private fun setupListAdapter() {
-        listAdapter = CheckItemListAdapter(viewModel)
+        listAdapter =
+            CheckItemListAdapter(
+                viewModel,
+                object : CheckItemListAdapter.OnItemDeleteClickListener {
+                    override fun onItemDeleteClick(item: CheckItem) {
+                        Timber.d("ON CLICK ${item.id}")
+                    }
+                })
         binding.checkitemList.adapter = listAdapter
         binding.button.setOnClickListener() {
             val item = CheckItem()
