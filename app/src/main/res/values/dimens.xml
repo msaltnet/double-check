@@ -1,10 +1,12 @@
 <resources>
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="list_item_margin_top">16dp</dimen>
-    <dimen name="list_item_padding">8dp</dimen>
+    <dimen name="list_item_padding">4dp</dimen>
+
     <dimen name="detail_list_item_margin">16dp</dimen>
+
+    <dimen name="menu_item_margin">16dp</dimen>
 
     <dimen name="edit_task_title_padding">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="icon_size">52dp</dimen>
 </resources>

@@ -17,7 +17,7 @@
         >
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:padding="@dimen/edit_task_title_padding">
+                android:padding="@dimen/list_item_padding">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/bunch_list"
@@ -45,7 +45,7 @@
             android:layout_gravity="bottom|right|end"
             android:layout_margin="@dimen/fab_margin"
             app:fabSize="normal"
-            app:srcCompat="@android:drawable/ic_dialog_email" />
+            app:srcCompat="@drawable/ic_add" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

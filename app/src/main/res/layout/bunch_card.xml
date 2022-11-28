@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
         <import type="android.widget.CompoundButton" />
@@ -9,22 +11,64 @@
             type="net.msalt.doublecheck.data.Bunch" />
     </data>
 
-    <LinearLayout
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
         android:layout_width="match_parent"
-        android:layout_height="?android:attr/listPreferredItemHeight"
-        android:orientation="horizontal"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingBottom="@dimen/list_item_padding"
-        android:paddingTop="@dimen/list_item_padding" >
+        android:layout_height="150dp"
+        android:layout_margin="8dp"
+        android:layout_gravity="center"
+        card_view:cardElevation="8dp"
+        card_view:cardCornerRadius="0dp">
 
-        <TextView
-            android:id="@+id/bunch_title_text"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLength="140"
-            android:singleLine="true"
-            android:scrollHorizontally="true"
-            android:text="@{item.title.length() == 0 ? @string/app_name : item.title}" />
-    </LinearLayout>
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/bunch_title_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="8dp"
+                android:paddingHorizontal="16dp"
+                android:scrollHorizontally="false"
+                android:singleLine="true"
+                android:text="@{item.title.length() == 0 ? @string/app_name : item.title}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                card_view:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/bunch_digest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="16dp"
+                android:text="@{item.title.length() == 0 ? @string/app_name : item.title}"
+                card_view:layout_constraintBottom_toBottomOf="parent"
+                card_view:layout_constraintEnd_toEndOf="parent"
+                card_view:layout_constraintHorizontal_bias="0.0"
+                card_view:layout_constraintStart_toStartOf="parent"
+                card_view:layout_constraintTop_toBottomOf="@+id/bunch_title_text"
+                card_view:layout_constraintVertical_bias="0.0" />
+
+            <ImageButton
+                android:id="@+id/copyBunch"
+                android:layout_width="@dimen/icon_size"
+                android:layout_height="@dimen/icon_size"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="8dp"
+                card_view:layout_constraintBottom_toBottomOf="parent"
+                card_view:layout_constraintEnd_toStartOf="@+id/deleteBunch"
+                card_view:srcCompat="@drawable/ic_open_in_new" />
+
+            <ImageButton
+                android:id="@+id/deleteBunch"
+                android:layout_width="@dimen/icon_size"
+                android:layout_height="@dimen/icon_size"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                card_view:layout_constraintBottom_toBottomOf="parent"
+                card_view:layout_constraintEnd_toEndOf="parent"
+                card_view:srcCompat="@drawable/ic_delete" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
 </layout>

@@ -4,7 +4,7 @@
         android:id="@+id/resetAll"
         android:icon="@drawable/ic_refresh"
         android:title="@string/reset_menu"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/menu_item_margin"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/editBunch"

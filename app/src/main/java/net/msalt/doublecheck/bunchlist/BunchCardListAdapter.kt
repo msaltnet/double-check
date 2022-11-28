@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import net.msalt.doublecheck.data.Bunch
 import net.msalt.doublecheck.databinding.BunchCardBinding
-import timber.log.Timber
 
 class BunchCardListAdapter(
     private val viewModel: BunchListViewModel,
