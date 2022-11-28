@@ -14,4 +14,5 @@ data class CheckItem(
     @PrimaryKey @ColumnInfo(name = "id") var id: String = UUID.randomUUID().toString(),
     @ColumnInfo(name = "bunchId") var bunchId: String = "",
     @ColumnInfo(name = "checked") var checked: Boolean = false,
+    @ColumnInfo(name = "order") var order: Int = 0,
 )

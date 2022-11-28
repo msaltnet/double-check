@@ -29,7 +29,7 @@ class EditBunchViewModel(private val database: DoubleCheckDatabase) : ViewModel(
             for (item in data.checkItems) {
                 item.contents_data.value = item.contents
                 items.add(item)
-                Timber.d("Bunch items: ${item.id}: ${item.contents}")
+                Timber.d("Bunch items: ${item.id}: ${item.contents}, ${item.order}")
             }
             _loaded.value = true
         }

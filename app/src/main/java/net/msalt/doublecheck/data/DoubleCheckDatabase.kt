@@ -24,7 +24,7 @@ abstract class DoubleCheckDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     DoubleCheckDatabase::class.java,
-                    "doublecheck_database"
+                    "doublecheck_db"
                 ).build()
                 INSTANCE = instance
                 // return instance

@@ -33,7 +33,7 @@ class BunchDetailViewModel(private val database: DoubleCheckDatabase) : ViewMode
             title.value = data.bunch.title
             for (item in data.checkItems) {
                 item.contents_data.value = item.contents
-                Timber.d("Bunch items: ${item.id}: ${item.contents}")
+                Timber.d("Bunch items: ${item.id}: ${item.contents}, ${item.order}")
             }
             _items.value = data.checkItems
         }

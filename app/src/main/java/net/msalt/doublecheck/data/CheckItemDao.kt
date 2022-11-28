@@ -10,6 +10,6 @@ interface CheckItemDao {
     @Delete
     suspend fun delete(checkItem: CheckItem)
 
-    @Query("SELECT * FROM checkitem")
+    @Query("SELECT * FROM checkitem ORDER BY `order` ASC")
     suspend fun getAll(): List<CheckItem>
 }
