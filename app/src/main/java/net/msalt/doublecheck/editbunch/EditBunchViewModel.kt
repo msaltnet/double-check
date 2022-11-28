@@ -35,6 +35,13 @@ class EditBunchViewModel(private val database: DoubleCheckDatabase) : ViewModel(
         }
     }
 
+    fun deleteItem(item: CheckItem) {
+        items.remove(item)
+        viewModelScope.launch(Dispatchers.IO) {
+            database.checkItemDao().delete(item)
+        }
+    }
+
     fun appendItem(item: CheckItem) {
         item.bunchId = bunch.id
         items.add(item)

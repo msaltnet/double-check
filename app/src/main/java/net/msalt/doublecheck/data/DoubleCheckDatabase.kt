@@ -17,14 +17,14 @@ abstract class DoubleCheckDatabase : RoomDatabase() {
         private var INSTANCE: DoubleCheckDatabase? = null
 
         fun getDatabase(
-                context: Context,
+            context: Context,
         ): DoubleCheckDatabase {
 
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
-                        context.applicationContext,
-                        DoubleCheckDatabase::class.java,
-                        "doublecheck_database"
+                    context.applicationContext,
+                    DoubleCheckDatabase::class.java,
+                    "doublecheck_database"
                 ).build()
                 INSTANCE = instance
                 // return instance

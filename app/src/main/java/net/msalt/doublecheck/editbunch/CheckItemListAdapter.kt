@@ -44,7 +44,7 @@ class CheckItemListAdapter(
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = EditItemBinding.inflate(layoutInflater, parent, false)
 
-                binding.imageButton.setOnClickListener {
+                binding.deleteButton.setOnClickListener {
                     binding.item?.let {
                         clickListener.onItemDeleteClick(it)
                     }

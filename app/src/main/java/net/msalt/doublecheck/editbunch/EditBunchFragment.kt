@@ -84,10 +84,14 @@ class EditBunchFragment : Fragment() {
                 object : CheckItemListAdapter.OnItemDeleteClickListener {
                     override fun onItemDeleteClick(item: CheckItem) {
                         Timber.d("ON CLICK ${item.id}")
+                        val pos = viewModel.items.indexOf(item)
+                        viewModel.deleteItem(item)
+                        listAdapter.notifyItemRemoved(pos)
+                        listAdapter.notifyItemRangeChanged(pos, viewModel.items.size)
                     }
                 })
         binding.checkitemList.adapter = listAdapter
-        binding.button.setOnClickListener() {
+        binding.addButton.setOnClickListener {
             val item = CheckItem()
             item.contents_data.observe(this.viewLifecycleOwner) {
                 Timber.d("Changed item contents ${item.id} : $it")

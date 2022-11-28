@@ -7,6 +7,7 @@ import java.util.*
 
 @Entity(tableName = "bunch")
 data class Bunch(
-        @ColumnInfo(name = "title") var title: String = "",
-        @PrimaryKey @ColumnInfo(name = "id") var id: String = UUID.randomUUID().toString(),
-        @ColumnInfo(name = "category") var category: String = "")
+    @ColumnInfo(name = "title") var title: String = "",
+    @PrimaryKey @ColumnInfo(name = "id") var id: String = UUID.randomUUID().toString(),
+    @ColumnInfo(name = "category") var category: String = ""
+)

@@ -9,9 +9,9 @@ import java.util.*
 
 @Entity(tableName = "checkitem")
 data class CheckItem(
-        @ColumnInfo(name = "contents") var contents: String = "",
-        @Ignore var contents_data: MutableLiveData<String> = MutableLiveData<String>(""),
-        @PrimaryKey @ColumnInfo(name = "id") var id: String = UUID.randomUUID().toString(),
-        @ColumnInfo(name = "bunchId") var bunchId: String = "",
-        @ColumnInfo(name = "checked") var checked: Boolean = false,
+    @ColumnInfo(name = "contents") var contents: String = "",
+    @Ignore var contents_data: MutableLiveData<String> = MutableLiveData<String>(""),
+    @PrimaryKey @ColumnInfo(name = "id") var id: String = UUID.randomUUID().toString(),
+    @ColumnInfo(name = "bunchId") var bunchId: String = "",
+    @ColumnInfo(name = "checked") var checked: Boolean = false,
 )

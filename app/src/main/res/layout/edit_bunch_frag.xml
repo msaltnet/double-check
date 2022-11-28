@@ -49,7 +49,7 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
                 <Button
-                    android:id="@+id/button"
+                    android:id="@+id/addButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/list_item_margin_top"
