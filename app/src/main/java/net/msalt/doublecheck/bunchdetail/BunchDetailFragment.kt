@@ -1,12 +1,13 @@
 package net.msalt.doublecheck.bunchdetail
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import net.msalt.doublecheck.DoubleCheckViewModelFactory
@@ -40,7 +41,6 @@ class BunchDetailFragment : Fragment() {
         binding.viewmodel = viewModel
 
         val mainActivity = activity as MainActivity
-
         if (mainActivity.activeBunchId == "") {
             val newBunch = Bunch()
             mainActivity.activeBunchId = newBunch.id
@@ -55,6 +55,7 @@ class BunchDetailFragment : Fragment() {
         }
 
         Timber.d("[Detail] Bunch ID: $bunchId")
+        setupMenuProvider()
         return binding.root
     }
 
@@ -77,14 +78,36 @@ class BunchDetailFragment : Fragment() {
             BunchItemListAdapter(viewModel, object : BunchItemListAdapter.OnItemClickListener {
                 override fun onItemClick(item: CheckItem) {
                     Timber.d("ON CLICK ${item.id}")
-                    val action =
-                        BunchDetailFragmentDirections.actionBunchDetailFragmentToEditBunchFragment(
-                            bunchId
-                        )
-                    findNavController().navigate(action)
                 }
             })
         binding.bunchItemList.adapter = listAdapter
     }
+
+    private fun setupMenuProvider() {
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(
+            object : MenuProvider {
+                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                    menuInflater.inflate(R.menu.menu_bunch_detail, menu)
+                }
+
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                    return when (menuItem.itemId) {
+                        R.id.editBunch -> {
+                            val action =
+                                BunchDetailFragmentDirections.actionBunchDetailFragmentToEditBunchFragment(
+                                    bunchId
+                                )
+                            findNavController().navigate(action)
+                            true
+                        }
+                        else -> false
+                    }
+                }
+            },
+            viewLifecycleOwner, Lifecycle.State.RESUMED
+        )
+    }
+
 }
 
