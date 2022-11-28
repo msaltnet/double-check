@@ -5,6 +5,10 @@
         <import type="android.widget.CompoundButton" />
 
         <variable
+            name="viewmodel"
+            type="net.msalt.doublecheck.bunchdetail.BunchDetailViewModel" />
+
+        <variable
             name="item"
             type="net.msalt.doublecheck.data.CheckItem" />
     </data>
@@ -22,6 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:onClick="@{(view) -> viewmodel.toggleCheck(item)}"
             android:checked="@{item.checked}" />
 
         <TextView

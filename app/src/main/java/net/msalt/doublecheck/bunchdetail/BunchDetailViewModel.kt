@@ -39,4 +39,10 @@ class BunchDetailViewModel(private val database: DoubleCheckDatabase) : ViewMode
         }
     }
 
+    fun toggleCheck(item: CheckItem) {
+        item.checked = !item.checked
+        viewModelScope.launch(Dispatchers.IO) {
+            database.checkItemDao().upsert(item)
+        }
+    }
 }

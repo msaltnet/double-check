@@ -25,8 +25,6 @@ class BunchListFragment : Fragment() {
 
     private lateinit var listAdapter: BunchCardListAdapter
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -44,8 +42,6 @@ class BunchListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Set the lifecycle owner to the lifecycle of the view
         binding.lifecycleOwner = this.viewLifecycleOwner
         binding.viewmodel = viewModel
         setupListAdapter()

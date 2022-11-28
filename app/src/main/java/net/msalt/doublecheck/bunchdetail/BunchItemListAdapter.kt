@@ -21,7 +21,7 @@ class BunchItemListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), viewModel)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -31,7 +31,8 @@ class BunchItemListAdapter(
     class ViewHolder private constructor(private val binding: DetailItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: CheckItem) {
+        fun bind(item: CheckItem, viewModel: BunchDetailViewModel) {
+            binding.viewmodel = viewModel
             binding.item = item
             binding.executePendingBindings()
         }

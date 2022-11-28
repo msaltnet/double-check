@@ -29,8 +29,6 @@ class BunchDetailFragment : Fragment() {
 
     private lateinit var bunchId: String
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -61,8 +59,6 @@ class BunchDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Set the lifecycle owner to the lifecycle of the view
         binding.lifecycleOwner = this.viewLifecycleOwner
         setupListAdapter()
     }
@@ -70,7 +66,6 @@ class BunchDetailFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        Timber.d("Bunch Detail Fragment Destroy")
     }
 
     private fun setupListAdapter() {
@@ -78,6 +73,11 @@ class BunchDetailFragment : Fragment() {
             BunchItemListAdapter(viewModel, object : BunchItemListAdapter.OnItemClickListener {
                 override fun onItemClick(item: CheckItem) {
                     Timber.d("ON CLICK ${item.id}")
+                    viewModel.items.value?.let {
+                        val pos = it.indexOf(item)
+                        viewModel.toggleCheck(item)
+                        listAdapter.notifyItemRangeChanged(pos, 1)
+                    }
                 }
             })
         binding.bunchItemList.adapter = listAdapter
@@ -108,6 +108,5 @@ class BunchDetailFragment : Fragment() {
             viewLifecycleOwner, Lifecycle.State.RESUMED
         )
     }
-
 }
 
