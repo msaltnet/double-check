@@ -101,6 +101,11 @@ class BunchDetailFragment : Fragment() {
                             findNavController().navigate(action)
                             true
                         }
+                        R.id.resetAll -> {
+                            viewModel.resetCheckState()
+                            listAdapter.notifyDataSetChanged()
+                            true
+                        }
                         else -> false
                     }
                 }

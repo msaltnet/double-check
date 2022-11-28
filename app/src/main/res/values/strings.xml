@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Double Check</string>
     <string name="edit_menu">Edit</string>
+    <string name="reset_menu">Reset</string>
     <string name="title_hint">Check List For</string>
 
     <string name="bunch_list_fragment_label">Bunch List</string>
