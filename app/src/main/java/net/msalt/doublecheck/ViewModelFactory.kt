@@ -11,18 +11,18 @@ import net.msalt.doublecheck.editbunch.EditBunchViewModel
 @Suppress("UNCHECKED_CAST")
 val DoubleCheckViewModelFactory = object : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T =
-            with(modelClass) {
-                val application = checkNotNull(extras[APPLICATION_KEY]) as DoubleCheckApplication
-                val database = application.database
-                when {
-                    isAssignableFrom(EditBunchViewModel::class.java) ->
-                        EditBunchViewModel(database)
-                    isAssignableFrom(BunchListViewModel::class.java) ->
-                        BunchListViewModel(database)
-                    isAssignableFrom(BunchDetailViewModel::class.java) ->
-                        BunchDetailViewModel(database)
-                    else ->
-                        throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
-                }
-            } as T
+        with(modelClass) {
+            val application = checkNotNull(extras[APPLICATION_KEY]) as DoubleCheckApplication
+            val database = application.database
+            when {
+                isAssignableFrom(EditBunchViewModel::class.java) ->
+                    EditBunchViewModel(database)
+                isAssignableFrom(BunchListViewModel::class.java) ->
+                    BunchListViewModel(database)
+                isAssignableFrom(BunchDetailViewModel::class.java) ->
+                    BunchDetailViewModel(database)
+                else ->
+                    throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
+            }
+        } as T
 }

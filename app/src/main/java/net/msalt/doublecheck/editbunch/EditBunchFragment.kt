@@ -84,6 +84,7 @@ class EditBunchFragment : Fragment() {
                 object : CheckItemListAdapter.OnItemDeleteClickListener {
                     override fun onItemDeleteClick(item: CheckItem) {
                         Timber.d("ON CLICK ${item.id}")
+                        binding.checkitemList.clearFocus() // to fix exception when focus on editText
                         val pos = viewModel.items.indexOf(item)
                         viewModel.deleteItem(item)
                         listAdapter.notifyItemRemoved(pos)

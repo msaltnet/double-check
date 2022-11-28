@@ -30,8 +30,8 @@ class BunchListFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         _binding = BunchListFragBinding.inflate(inflater, container, false)
         binding.fab.setOnClickListener {
@@ -59,14 +59,15 @@ class BunchListFragment : Fragment() {
     }
 
     private fun setupListAdapter() {
-        listAdapter = BunchCardListAdapter(viewModel, object : BunchCardListAdapter.OnItemClickListener {
-            override fun onItemClick(item: Bunch) {
-                Timber.d("ON CLICK ${item.id}")
-                val mainActivity = activity as MainActivity
-                mainActivity.activeBunchId = item.id
-                findNavController().navigate(R.id.bunch_detail_fragment_dest)
-            }
-        })
+        listAdapter =
+            BunchCardListAdapter(viewModel, object : BunchCardListAdapter.OnItemClickListener {
+                override fun onItemClick(item: Bunch) {
+                    Timber.d("ON CLICK ${item.id}")
+                    val mainActivity = activity as MainActivity
+                    mainActivity.activeBunchId = item.id
+                    findNavController().navigate(R.id.bunch_detail_fragment_dest)
+                }
+            })
         binding.bunchList.adapter = listAdapter
     }
 }

@@ -21,9 +21,7 @@ class BunchItemListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        viewModel.items.value?.let {
-            holder.bind(it[position])
-        }
+        holder.bind(getItem(position))
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

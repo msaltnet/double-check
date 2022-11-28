@@ -10,17 +10,18 @@ import net.msalt.doublecheck.data.Bunch
 import net.msalt.doublecheck.databinding.BunchCardBinding
 import timber.log.Timber
 
-class BunchCardListAdapter(private val viewModel: BunchListViewModel, private val clickListener: OnItemClickListener) :
-        ListAdapter<Bunch, BunchCardListAdapter.ViewHolder>(BunchCardDiffCallback()) {
+class BunchCardListAdapter(
+    private val viewModel: BunchListViewModel,
+    private val clickListener: OnItemClickListener
+) :
+    ListAdapter<Bunch, BunchCardListAdapter.ViewHolder>(BunchCardDiffCallback()) {
 
     interface OnItemClickListener {
         fun onItemClick(item: Bunch)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        viewModel.items.value?.let {
-            holder.bind(it[position])
-        }
+        holder.bind(getItem(position))
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -28,7 +29,7 @@ class BunchCardListAdapter(private val viewModel: BunchListViewModel, private va
     }
 
     class ViewHolder private constructor(private val binding: BunchCardBinding) :
-            RecyclerView.ViewHolder(binding.root) {
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: Bunch) {
             binding.item = item
