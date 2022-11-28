@@ -22,7 +22,9 @@ class EditBunchViewModel(private val database: DoubleCheckDatabase) : ViewModel(
     private var deferredUpdateItem: CheckItem? = null
 
     fun start(bunchId: String) {
+        Timber.d("Bunch items: ${items.size}")
         viewModelScope.launch {
+            items.clear()
             val data = database.bunchWithCheckItemDao().get(bunchId)
             bunch = data.bunch
             title.value = data.bunch.title

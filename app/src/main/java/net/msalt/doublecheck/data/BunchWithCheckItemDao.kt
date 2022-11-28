@@ -14,4 +14,8 @@ interface BunchWithCheckItemDao {
     suspend fun get(bunchId: String): BunchWithCheckItem {
         return BunchWithCheckItem(getBunch(bunchId), getCheckItem(bunchId))
     }
+
+    @Transaction
+    @Query("SELECT * FROM bunch")
+    suspend fun getAll(): List<BunchWithCheckItem>
 }

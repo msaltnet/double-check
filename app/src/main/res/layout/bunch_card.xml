@@ -8,7 +8,7 @@
 
         <variable
             name="item"
-            type="net.msalt.doublecheck.data.Bunch" />
+            type="net.msalt.doublecheck.data.BunchCard" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -41,7 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="16dp"
-                android:text="@{item.title.length() == 0 ? @string/app_name : item.title}"
+                android:text="@{item.digest}"
                 card_view:layout_constraintBottom_toBottomOf="parent"
                 card_view:layout_constraintEnd_toEndOf="parent"
                 card_view:layout_constraintHorizontal_bias="0.0"

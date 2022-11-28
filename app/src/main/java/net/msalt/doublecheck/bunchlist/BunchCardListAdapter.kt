@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import net.msalt.doublecheck.data.Bunch
+import net.msalt.doublecheck.data.BunchCard
 import net.msalt.doublecheck.databinding.BunchCardBinding
 
 class BunchCardListAdapter(
@@ -15,10 +16,10 @@ class BunchCardListAdapter(
     private val copyButtonClickListener: OnClickListener,
     private val deleteButtonClickListener: OnClickListener
 ) :
-    ListAdapter<Bunch, BunchCardListAdapter.ViewHolder>(BunchCardDiffCallback()) {
+    ListAdapter<BunchCard, BunchCardListAdapter.ViewHolder>(BunchCardDiffCallback()) {
 
     interface OnClickListener {
-        fun onClick(item: Bunch)
+        fun onClick(item: BunchCard)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -37,7 +38,7 @@ class BunchCardListAdapter(
     class ViewHolder private constructor(private val binding: BunchCardBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Bunch) {
+        fun bind(item: BunchCard) {
             binding.item = item
             binding.executePendingBindings()
         }
@@ -79,18 +80,18 @@ class BunchCardListAdapter(
     }
 }
 
-class BunchCardDiffCallback : DiffUtil.ItemCallback<Bunch>() {
-    override fun areItemsTheSame(oldItem: Bunch, newItem: Bunch): Boolean {
+class BunchCardDiffCallback : DiffUtil.ItemCallback<BunchCard>() {
+    override fun areItemsTheSame(oldItem: BunchCard, newItem: BunchCard): Boolean {
         return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: Bunch, newItem: Bunch): Boolean {
+    override fun areContentsTheSame(oldItem: BunchCard, newItem: BunchCard): Boolean {
         return oldItem == newItem
     }
 }
 
 @BindingAdapter("bunchitems")
-fun setItems(listView: RecyclerView, items: List<Bunch>?) {
+fun setItems(listView: RecyclerView, items: List<BunchCard>?) {
     items?.let {
         (listView.adapter as BunchCardListAdapter).submitList(items)
     }

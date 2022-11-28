@@ -11,6 +11,7 @@ import net.msalt.doublecheck.DoubleCheckViewModelFactory
 import net.msalt.doublecheck.MainActivity
 import net.msalt.doublecheck.R
 import net.msalt.doublecheck.data.Bunch
+import net.msalt.doublecheck.data.BunchCard
 import net.msalt.doublecheck.data.CheckItem
 import net.msalt.doublecheck.databinding.BunchListFragBinding
 import net.msalt.doublecheck.editbunch.CheckItemListAdapter
@@ -56,7 +57,7 @@ class BunchListFragment : Fragment() {
 
     private fun setupListAdapter() {
         val itemClickListener = object : BunchCardListAdapter.OnClickListener {
-            override fun onClick(item: Bunch) {
+            override fun onClick(item: BunchCard) {
                 Timber.d("ON CLICK ${item.id}")
                 val mainActivity = activity as MainActivity
                 mainActivity.activeBunchId = item.id
@@ -65,13 +66,13 @@ class BunchListFragment : Fragment() {
         }
 
         val copyClickListener = object : BunchCardListAdapter.OnClickListener {
-            override fun onClick(item: Bunch) {
+            override fun onClick(item: BunchCard) {
                 Timber.d("ON COPY CLICK ${item.id}")
             }
         }
 
         val deleteClickListener = object : BunchCardListAdapter.OnClickListener {
-            override fun onClick(item: Bunch) {
+            override fun onClick(item: BunchCard) {
                 Timber.d("ON DELETE CLICK ${item.id}")
             }
         }
@@ -84,6 +85,11 @@ class BunchListFragment : Fragment() {
                 deleteClickListener
             )
         binding.bunchList.adapter = listAdapter
+        viewModel.loaded.observe(this.viewLifecycleOwner) {
+            if (it) {
+                listAdapter.notifyDataSetChanged()
+            }
+        }
     }
 }
 
