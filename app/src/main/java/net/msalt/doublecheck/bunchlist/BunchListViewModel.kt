@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import net.msalt.doublecheck.data.Bunch
+import net.msalt.doublecheck.data.CheckItem
 import net.msalt.doublecheck.data.DoubleCheckDatabase
 import timber.log.Timber
 

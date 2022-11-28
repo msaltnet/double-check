@@ -11,12 +11,14 @@ import net.msalt.doublecheck.databinding.BunchCardBinding
 
 class BunchCardListAdapter(
     private val viewModel: BunchListViewModel,
-    private val clickListener: OnItemClickListener
+    private val itemClickListener: OnClickListener,
+    private val copyButtonClickListener: OnClickListener,
+    private val deleteButtonClickListener: OnClickListener
 ) :
     ListAdapter<Bunch, BunchCardListAdapter.ViewHolder>(BunchCardDiffCallback()) {
 
-    interface OnItemClickListener {
-        fun onItemClick(item: Bunch)
+    interface OnClickListener {
+        fun onClick(item: Bunch)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -24,7 +26,12 @@ class BunchCardListAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.from(parent, clickListener)
+        return ViewHolder.from(
+            parent,
+            itemClickListener,
+            copyButtonClickListener,
+            deleteButtonClickListener
+        )
     }
 
     class ViewHolder private constructor(private val binding: BunchCardBinding) :
@@ -36,15 +43,36 @@ class BunchCardListAdapter(
         }
 
         companion object {
-            fun from(parent: ViewGroup, clickListener: OnItemClickListener): ViewHolder {
+            fun from(
+                parent: ViewGroup,
+                itemClickListener: OnClickListener,
+                copyButtonClickListener: OnClickListener,
+                deleteButtonClickListener: OnClickListener
+            ): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = BunchCardBinding.inflate(layoutInflater, parent, false)
 
-                binding.root.setOnClickListener {
+                binding.bunchTitleText.setOnClickListener {
                     binding.item?.let {
-                        clickListener.onItemClick(it)
+                        itemClickListener.onClick(it)
                     }
                 }
+                binding.bunchDigest.setOnClickListener {
+                    binding.item?.let {
+                        itemClickListener.onClick(it)
+                    }
+                }
+                binding.copyBunch.setOnClickListener {
+                    binding.item?.let {
+                        copyButtonClickListener.onClick(it)
+                    }
+                }
+                binding.deleteBunch.setOnClickListener {
+                    binding.item?.let {
+                        deleteButtonClickListener.onClick(it)
+                    }
+                }
+
                 return ViewHolder(binding)
             }
         }

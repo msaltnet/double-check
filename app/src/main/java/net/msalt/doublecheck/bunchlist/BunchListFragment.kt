@@ -55,15 +55,34 @@ class BunchListFragment : Fragment() {
     }
 
     private fun setupListAdapter() {
+        val itemClickListener = object : BunchCardListAdapter.OnClickListener {
+            override fun onClick(item: Bunch) {
+                Timber.d("ON CLICK ${item.id}")
+                val mainActivity = activity as MainActivity
+                mainActivity.activeBunchId = item.id
+                findNavController().navigate(R.id.bunch_detail_fragment_dest)
+            }
+        }
+
+        val copyClickListener = object : BunchCardListAdapter.OnClickListener {
+            override fun onClick(item: Bunch) {
+                Timber.d("ON COPY CLICK ${item.id}")
+            }
+        }
+
+        val deleteClickListener = object : BunchCardListAdapter.OnClickListener {
+            override fun onClick(item: Bunch) {
+                Timber.d("ON DELETE CLICK ${item.id}")
+            }
+        }
+
         listAdapter =
-            BunchCardListAdapter(viewModel, object : BunchCardListAdapter.OnItemClickListener {
-                override fun onItemClick(item: Bunch) {
-                    Timber.d("ON CLICK ${item.id}")
-                    val mainActivity = activity as MainActivity
-                    mainActivity.activeBunchId = item.id
-                    findNavController().navigate(R.id.bunch_detail_fragment_dest)
-                }
-            })
+            BunchCardListAdapter(
+                viewModel,
+                itemClickListener,
+                copyClickListener,
+                deleteClickListener
+            )
         binding.bunchList.adapter = listAdapter
     }
 }
