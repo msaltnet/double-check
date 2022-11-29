@@ -74,6 +74,12 @@ class BunchListFragment : Fragment() {
         val deleteClickListener = object : BunchCardListAdapter.OnClickListener {
             override fun onClick(item: BunchCard) {
                 Timber.d("ON DELETE CLICK ${item.id}")
+                viewModel.items.value?.let {
+                    val pos = it.indexOf(item)
+                    viewModel.deleteBunch(item)
+                    listAdapter.notifyItemRemoved(pos)
+                    listAdapter.notifyItemRangeChanged(pos, it.size)
+                }
             }
         }
 

@@ -10,6 +10,9 @@ interface BunchDao {
     @Delete
     suspend fun delete(bunch: Bunch)
 
+    @Query("DELETE FROM bunch WHERE id = :id")
+    suspend fun deleteById(id: String)
+
     @Query("SELECT * FROM bunch")
     suspend fun getAll(): List<Bunch>
 

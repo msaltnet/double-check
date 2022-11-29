@@ -39,4 +39,13 @@ class BunchListViewModel(private val database: DoubleCheckDatabase) : ViewModel(
             _loaded.value = true
         }
     }
+
+    fun deleteBunch(item: BunchCard) {
+        val id = item.id
+        _items.remove(item)
+        viewModelScope.launch {
+            database.bunchDao().deleteById(id)
+            database.checkItemDao().deleteByBunchId(id)
+        }
+    }
 }
