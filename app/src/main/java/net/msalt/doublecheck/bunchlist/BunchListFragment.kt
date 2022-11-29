@@ -28,6 +28,9 @@ class BunchListFragment : Fragment() {
 
     private val binding get() = _binding!!
 
+    private var isWaitingClone = false
+    private var clonedBunchId = ""
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,6 +50,12 @@ class BunchListFragment : Fragment() {
         binding.viewmodel = viewModel
         setupListAdapter()
         viewModel.update()
+        viewModel.cloneCompleted.observe(this.viewLifecycleOwner) {
+            if (it && isWaitingClone) {
+                isWaitingClone = false
+                goToBunchDetail(clonedBunchId)
+            }
+        }
     }
 
     override fun onDestroyView() {
@@ -55,19 +64,29 @@ class BunchListFragment : Fragment() {
         Timber.d("Bunch List Fragment Destroy")
     }
 
+    private fun goToBunchDetail(id: String) {
+        val mainActivity = activity as MainActivity
+        mainActivity.activeBunchId = id
+        findNavController().navigate(R.id.bunch_detail_fragment_dest)
+    }
+
     private fun setupListAdapter() {
         val itemClickListener = object : BunchCardListAdapter.OnClickListener {
             override fun onClick(item: BunchCard) {
                 Timber.d("ON CLICK ${item.id}")
-                val mainActivity = activity as MainActivity
-                mainActivity.activeBunchId = item.id
-                findNavController().navigate(R.id.bunch_detail_fragment_dest)
+                goToBunchDetail(item.id)
             }
         }
 
-        val copyClickListener = object : BunchCardListAdapter.OnClickListener {
+        val cloneClickListener = object : BunchCardListAdapter.OnClickListener {
             override fun onClick(item: BunchCard) {
-                Timber.d("ON COPY CLICK ${item.id}")
+                Timber.d("ON CLONE CLICK ${item.id} $isWaitingClone")
+                if (isWaitingClone)
+                    return
+
+                isWaitingClone = true
+                val id = viewModel.cloneBunch(item)
+                clonedBunchId = id
             }
         }
 
@@ -87,7 +106,7 @@ class BunchListFragment : Fragment() {
             BunchCardListAdapter(
                 viewModel,
                 itemClickListener,
-                copyClickListener,
+                cloneClickListener,
                 deleteClickListener
             )
         binding.bunchList.adapter = listAdapter

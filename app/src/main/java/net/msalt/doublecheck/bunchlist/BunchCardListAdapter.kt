@@ -13,7 +13,7 @@ import net.msalt.doublecheck.databinding.BunchCardBinding
 class BunchCardListAdapter(
     private val viewModel: BunchListViewModel,
     private val itemClickListener: OnClickListener,
-    private val copyButtonClickListener: OnClickListener,
+    private val cloneButtonClickListener: OnClickListener,
     private val deleteButtonClickListener: OnClickListener
 ) :
     ListAdapter<BunchCard, BunchCardListAdapter.ViewHolder>(BunchCardDiffCallback()) {
@@ -30,7 +30,7 @@ class BunchCardListAdapter(
         return ViewHolder.from(
             parent,
             itemClickListener,
-            copyButtonClickListener,
+            cloneButtonClickListener,
             deleteButtonClickListener
         )
     }
@@ -47,7 +47,7 @@ class BunchCardListAdapter(
             fun from(
                 parent: ViewGroup,
                 itemClickListener: OnClickListener,
-                copyButtonClickListener: OnClickListener,
+                cloneButtonClickListener: OnClickListener,
                 deleteButtonClickListener: OnClickListener
             ): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
@@ -63,9 +63,9 @@ class BunchCardListAdapter(
                         itemClickListener.onClick(it)
                     }
                 }
-                binding.copyBunch.setOnClickListener {
+                binding.cloneBunch.setOnClickListener {
                     binding.item?.let {
-                        copyButtonClickListener.onClick(it)
+                        cloneButtonClickListener.onClick(it)
                     }
                 }
                 binding.deleteBunch.setOnClickListener {
