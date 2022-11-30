@@ -11,39 +11,61 @@ class FakeCheckListRepository() : CheckListRepository {
     var checkItemData: LinkedHashMap<String, CheckItem> = LinkedHashMap()
 
     override suspend fun updateBunch(bunch: Bunch) {
-        bunchData[bunch.id] = bunch
+        bunchData[bunch.id] = bunch.copy()
     }
 
-    override suspend fun getBunch(bunchId: String): Bunch {
-//        return bunchData[bunchId] ?: Bunch
+    override suspend fun getBunch(bunchId: String): Bunch? {
+        return bunchData[bunchId]
     }
 
     override suspend fun updateCheckItem(checkItem: CheckItem) {
-        database.checkItemDao().upsert(checkItem)
+        checkItemData[checkItem.id] = checkItem.copy()
     }
 
     override suspend fun updateCheckItem(checkItem: List<CheckItem>) {
-        database.checkItemDao().upsert(checkItem)
+        for (item in checkItem) {
+            checkItemData[item.id] = item.copy()
+        }
     }
 
     override suspend fun deleteCheckItem(checkItem: CheckItem) {
-        database.checkItemDao().delete(checkItem)
+        checkItemData.remove(checkItem.id)
     }
 
     override suspend fun deleteBunchWithItem(bunchId: String) {
-        database.bunchDao().deleteById(bunchId)
-        database.checkItemDao().deleteByBunchId(bunchId)
+        bunchData.remove(bunchId)
+        val targetItems = java.util.ArrayList<String>()
+        for (item in checkItemData.values)
+            targetItems.add(item.id)
+
+        for (id in targetItems)
+            checkItemData.remove(id)
     }
 
     override suspend fun getCheckItems(bunchId: String): List<CheckItem> {
-        return database.checkItemDao().getByBunchId(bunchId)
+        val targetItems = java.util.ArrayList<CheckItem>()
+        for (item in checkItemData.values) {
+            if (item.bunchId == bunchId)
+                targetItems.add(item.copy())
+        }
+        return targetItems
     }
 
-    override suspend fun getBunchWithItem(bunchId: String): BunchWithCheckItem {
-        return database.bunchWithCheckItemDao().get(bunchId)
+    override suspend fun getBunchWithItem(bunchId: String): BunchWithCheckItem? {
+        val bunch = bunchData[bunchId] ?: return null
+        val targetItems = java.util.ArrayList<CheckItem>()
+        for (item in checkItemData.values) {
+            if (item.bunchId == bunchId)
+                targetItems.add(item.copy())
+        }
+        return BunchWithCheckItem(bunch, checkItems = targetItems)
     }
 
     override suspend fun getAllBunchWithItem(): List<BunchWithCheckItem> {
-        return database.bunchWithCheckItemDao().getAll()
+        val bunchList = ArrayList<BunchWithCheckItem>()
+        for (bunch in bunchData.values) {
+            bunchList.add(BunchWithCheckItem(bunch.copy(), checkItems = getCheckItems(bunch.id)))
+        }
+        return bunchList
     }
 }

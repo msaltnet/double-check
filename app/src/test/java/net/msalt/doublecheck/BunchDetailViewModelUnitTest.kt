@@ -1,21 +1,33 @@
 package net.msalt.doublecheck
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.*
 import net.msalt.doublecheck.bunchdetail.BunchDetailViewModel
-import org.junit.Test
+import net.msalt.doublecheck.data.Bunch
+import org.junit.*
 
 import org.junit.Assert.*
+import timber.log.Timber
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
+@ExperimentalCoroutinesApi
 class BunchDetailViewModelUnitTest {
-    // Subject under test
-    private lateinit var bunchDetailViewModel: BunchDetailViewModel
+    private val dispatcher = StandardTestDispatcher()
+
+    @get:Rule
+    val timberRule = TimberRule()
+
+    @get:Rule
+    val mainCoroutineRule = MainCoroutineRule()
 
     @Test
-    fun start_should_call_upsert_with_parameter() {
-        assertEquals(4, 2 + 2)
+    fun start_should_call_update_bunch_when_called_with_bunch() = runTest {
+        var repo = FakeCheckListRepository()
+        val viewModel = BunchDetailViewModel(repo)
+        val bunch = Bunch()
+        viewModel.start(bunch)
+        val retrieved = repo.getBunch(bunch.id)
+        assertEquals(bunch, retrieved)
     }
 }
