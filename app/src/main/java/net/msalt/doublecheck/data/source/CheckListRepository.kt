@@ -7,7 +7,7 @@ import net.msalt.doublecheck.data.CheckItem
 interface CheckListRepository {
     suspend fun updateBunch(bunch: Bunch)
 
-    suspend fun getBunch(bunchId: String): Bunch
+    suspend fun getBunch(bunchId: String): Bunch?
 
     suspend fun updateCheckItem(checkItem: CheckItem)
 
@@ -19,7 +19,7 @@ interface CheckListRepository {
 
     suspend fun deleteBunchWithItem(bunchId: String)
 
-    suspend fun getBunchWithItem(bunchId: String): BunchWithCheckItem
+    suspend fun getBunchWithItem(bunchId: String): BunchWithCheckItem?
 
     suspend fun getAllBunchWithItem(): List<BunchWithCheckItem>
 }

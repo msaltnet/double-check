@@ -28,6 +28,11 @@ class EditBunchViewModel(private val checkListRepository: CheckListRepository) :
         viewModelScope.launch {
             items.clear()
             val data = checkListRepository.getBunchWithItem(bunchId)
+            if (data == null) {
+                throw IllegalArgumentException("Invalid Bunch ID!")
+                return@launch
+            }
+
             bunch = data.bunch
             title.value = data.bunch.title
             for (item in data.checkItems) {

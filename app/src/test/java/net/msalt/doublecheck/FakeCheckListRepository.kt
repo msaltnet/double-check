@@ -1,16 +1,21 @@
-package net.msalt.doublecheck.data.source
+package net.msalt.doublecheck
 
 import net.msalt.doublecheck.data.Bunch
 import net.msalt.doublecheck.data.BunchWithCheckItem
 import net.msalt.doublecheck.data.CheckItem
+import net.msalt.doublecheck.data.source.CheckListRepository
+import java.util.LinkedHashMap
 
-class DefaultCheckListRepository(private val database: DoubleCheckDatabase) : CheckListRepository {
+class FakeCheckListRepository() : CheckListRepository {
+    var bunchData: LinkedHashMap<String, Bunch> = LinkedHashMap()
+    var checkItemData: LinkedHashMap<String, CheckItem> = LinkedHashMap()
+
     override suspend fun updateBunch(bunch: Bunch) {
-        database.bunchDao().upsert(bunch)
+        bunchData[bunch.id] = bunch
     }
 
-    override suspend fun getBunch(bunchId: String): Bunch? {
-        return database.bunchDao().getById(bunchId)
+    override suspend fun getBunch(bunchId: String): Bunch {
+//        return bunchData[bunchId] ?: Bunch
     }
 
     override suspend fun updateCheckItem(checkItem: CheckItem) {
@@ -34,7 +39,7 @@ class DefaultCheckListRepository(private val database: DoubleCheckDatabase) : Ch
         return database.checkItemDao().getByBunchId(bunchId)
     }
 
-    override suspend fun getBunchWithItem(bunchId: String): BunchWithCheckItem? {
+    override suspend fun getBunchWithItem(bunchId: String): BunchWithCheckItem {
         return database.bunchWithCheckItemDao().get(bunchId)
     }
 

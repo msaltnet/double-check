@@ -10,6 +10,8 @@ import net.msalt.doublecheck.data.Bunch
 import net.msalt.doublecheck.data.CheckItem
 import net.msalt.doublecheck.data.source.CheckListRepository
 import net.msalt.doublecheck.data.source.DoubleCheckDatabase
+import timber.log.Timber
+import java.io.IOException
 
 class BunchDetailViewModel(private val checkListRepository: CheckListRepository) : ViewModel() {
     val title = MutableLiveData("")
@@ -27,6 +29,12 @@ class BunchDetailViewModel(private val checkListRepository: CheckListRepository)
     fun start(bunchId: String) {
         viewModelScope.launch {
             val data = checkListRepository.getBunchWithItem(bunchId)
+
+            if (data == null) {
+                throw IllegalArgumentException("Invalid Bunch ID!")
+                return@launch
+            }
+
             bunch = data.bunch
             title.value = data.bunch.title
             _items.value = data.checkItems
