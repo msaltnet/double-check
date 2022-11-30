@@ -1,6 +1,9 @@
-package net.msalt.doublecheck.data
+package net.msalt.doublecheck.data.source
 
 import androidx.room.*
+import net.msalt.doublecheck.data.Bunch
+import net.msalt.doublecheck.data.BunchWithCheckItem
+import net.msalt.doublecheck.data.CheckItem
 
 @Dao
 interface BunchWithCheckItemDao {

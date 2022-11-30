@@ -13,14 +13,14 @@ val DoubleCheckViewModelFactory = object : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T =
         with(modelClass) {
             val application = checkNotNull(extras[APPLICATION_KEY]) as DoubleCheckApplication
-            val database = application.database
+            val repository = application.repository
             when {
                 isAssignableFrom(EditBunchViewModel::class.java) ->
-                    EditBunchViewModel(database)
+                    EditBunchViewModel(repository)
                 isAssignableFrom(BunchListViewModel::class.java) ->
-                    BunchListViewModel(database)
+                    BunchListViewModel(repository)
                 isAssignableFrom(BunchDetailViewModel::class.java) ->
-                    BunchDetailViewModel(database)
+                    BunchDetailViewModel(repository)
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
             }

@@ -1,9 +1,11 @@
-package net.msalt.doublecheck.data
+package net.msalt.doublecheck.data.source
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import net.msalt.doublecheck.data.Bunch
+import net.msalt.doublecheck.data.CheckItem
 
 @Database(entities = [Bunch::class, CheckItem::class], version = 1, exportSchema = false)
 abstract class DoubleCheckDatabase : RoomDatabase() {

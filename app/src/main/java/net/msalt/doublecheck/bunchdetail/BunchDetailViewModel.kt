@@ -4,16 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import net.msalt.doublecheck.data.Bunch
 import net.msalt.doublecheck.data.CheckItem
-import net.msalt.doublecheck.data.DoubleCheckDatabase
-import timber.log.Timber
+import net.msalt.doublecheck.data.source.CheckListRepository
+import net.msalt.doublecheck.data.source.DoubleCheckDatabase
 
-class BunchDetailViewModel(private val database: DoubleCheckDatabase) : ViewModel() {
+class BunchDetailViewModel(private val checkListRepository: CheckListRepository) : ViewModel() {
     val title = MutableLiveData("")
     private val _items = MutableLiveData<List<CheckItem>>()
     val items: LiveData<List<CheckItem>> = _items
@@ -22,13 +20,13 @@ class BunchDetailViewModel(private val database: DoubleCheckDatabase) : ViewMode
     fun start(newBunch: Bunch) {
         bunch = newBunch
         viewModelScope.launch {
-            database.bunchDao().upsert(newBunch)
+            checkListRepository.updateBunch(newBunch)
         }
     }
 
     fun start(bunchId: String) {
         viewModelScope.launch {
-            val data = database.bunchWithCheckItemDao().get(bunchId)
+            val data = checkListRepository.getBunchWithItem(bunchId)
             bunch = data.bunch
             title.value = data.bunch.title
             _items.value = data.checkItems
@@ -38,7 +36,7 @@ class BunchDetailViewModel(private val database: DoubleCheckDatabase) : ViewMode
     fun toggleCheck(item: CheckItem) {
         item.checked = !item.checked
         viewModelScope.launch(Dispatchers.IO) {
-            database.checkItemDao().upsert(item)
+            checkListRepository.updateCheckItem(item)
         }
     }
 
@@ -47,7 +45,7 @@ class BunchDetailViewModel(private val database: DoubleCheckDatabase) : ViewMode
             item.checked = false
         }
         viewModelScope.launch(Dispatchers.IO) {
-            database.checkItemDao().upsert(_items.value!!)
+            checkListRepository.updateCheckItem(_items.value!!)
         }
     }
 }

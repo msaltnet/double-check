@@ -8,10 +8,11 @@ import kotlinx.coroutines.launch
 import net.msalt.doublecheck.data.Bunch
 import net.msalt.doublecheck.data.BunchCard
 import net.msalt.doublecheck.data.CheckItem
-import net.msalt.doublecheck.data.DoubleCheckDatabase
+import net.msalt.doublecheck.data.source.CheckListRepository
+import net.msalt.doublecheck.data.source.DoubleCheckDatabase
 import timber.log.Timber
 
-class BunchListViewModel(private val database: DoubleCheckDatabase) : ViewModel() {
+class BunchListViewModel(private val checkListRepository: CheckListRepository) : ViewModel() {
     private val _items = ArrayList<BunchCard>()
     val items: LiveData<List<BunchCard>> = MutableLiveData(_items)
     private val _loaded = MutableLiveData(false)
@@ -23,7 +24,7 @@ class BunchListViewModel(private val database: DoubleCheckDatabase) : ViewModel(
         _loaded.value = false
         viewModelScope.launch {
             _items.clear()
-            val all = database.bunchWithCheckItemDao().getAll()
+            val all = checkListRepository.getAllBunchWithItem()
             for (item in all) {
                 Timber.d("Bunch: ${item.bunch.id}: ${item.bunch.title}, ${item.checkItems.size}")
                 val count = if (item.checkItems.size < 3) item.checkItems.size else 3
@@ -48,8 +49,7 @@ class BunchListViewModel(private val database: DoubleCheckDatabase) : ViewModel(
         val id = item.id
         _items.remove(item)
         viewModelScope.launch {
-            database.bunchDao().deleteById(id)
-            database.checkItemDao().deleteByBunchId(id)
+            checkListRepository.deleteBunchWithItem(id)
         }
     }
 
@@ -59,8 +59,8 @@ class BunchListViewModel(private val database: DoubleCheckDatabase) : ViewModel(
         bunch.title = item.title + "_copy"
         bunch.category = item.category
         viewModelScope.launch {
-            database.bunchDao().upsert(bunch)
-            val all = database.checkItemDao().getByBunchId(item.id)
+            checkListRepository.updateBunch(bunch)
+            val all = checkListRepository.getCheckItems(item.id)
             val newList = mutableListOf<CheckItem>()
             for ((order, target) in all.withIndex()) {
                 newList.add(
@@ -71,7 +71,7 @@ class BunchListViewModel(private val database: DoubleCheckDatabase) : ViewModel(
                     )
                 )
             }
-            database.checkItemDao().insert(newList)
+            checkListRepository.updateCheckItem(newList)
             _cloneCompleted.value = true
         }
         return bunch.id

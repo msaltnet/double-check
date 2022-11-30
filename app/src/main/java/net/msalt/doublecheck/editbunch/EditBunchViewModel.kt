@@ -7,11 +7,12 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
 import net.msalt.doublecheck.data.Bunch
 import net.msalt.doublecheck.data.CheckItem
-import net.msalt.doublecheck.data.DoubleCheckDatabase
+import net.msalt.doublecheck.data.source.CheckListRepository
+import net.msalt.doublecheck.data.source.DoubleCheckDatabase
 import org.jetbrains.annotations.NotNull
 import timber.log.Timber
 
-class EditBunchViewModel(private val database: DoubleCheckDatabase) : ViewModel() {
+class EditBunchViewModel(private val checkListRepository: CheckListRepository) : ViewModel() {
     val title = MutableLiveData("")
     val items = ArrayList<CheckItem>()
     private val _loaded = MutableLiveData(false)
@@ -26,7 +27,7 @@ class EditBunchViewModel(private val database: DoubleCheckDatabase) : ViewModel(
         _loaded.value = false
         viewModelScope.launch {
             items.clear()
-            val data = database.bunchWithCheckItemDao().get(bunchId)
+            val data = checkListRepository.getBunchWithItem(bunchId)
             bunch = data.bunch
             title.value = data.bunch.title
             for (item in data.checkItems) {
@@ -41,7 +42,7 @@ class EditBunchViewModel(private val database: DoubleCheckDatabase) : ViewModel(
     fun deleteItem(item: CheckItem) {
         items.remove(item)
         viewModelScope.launch(Dispatchers.IO) {
-            database.checkItemDao().delete(item)
+            checkListRepository.deleteCheckItem(item)
         }
     }
 
@@ -49,7 +50,7 @@ class EditBunchViewModel(private val database: DoubleCheckDatabase) : ViewModel(
         item.bunchId = bunch.id
         items.add(item)
         viewModelScope.launch(Dispatchers.IO) {
-            database.checkItemDao().upsert(item)
+            checkListRepository.updateCheckItem(item)
         }
     }
 
@@ -70,7 +71,7 @@ class EditBunchViewModel(private val database: DoubleCheckDatabase) : ViewModel(
 
             viewModelScope.launch(Dispatchers.IO) {
                 Timber.d("[ITEM Update] START SINGLE")
-                database.checkItemDao().upsert(it)
+                checkListRepository.updateCheckItem(it)
                 Timber.d("[ITEM Update] END SINGLE")
             }
         }
@@ -78,7 +79,7 @@ class EditBunchViewModel(private val database: DoubleCheckDatabase) : ViewModel(
         deferredUpdateItemJob = viewModelScope.launch(Dispatchers.IO) {
             Timber.d("[ITEM Update] START")
             delay(deferredMs)
-            database.checkItemDao().upsert(item)
+            checkListRepository.updateCheckItem(item)
             Timber.d("[ITEM Update] END")
         }
         deferredUpdateItem = item
@@ -97,7 +98,7 @@ class EditBunchViewModel(private val database: DoubleCheckDatabase) : ViewModel(
         deferredUpdateTitleJob = viewModelScope.launch(Dispatchers.IO) {
             Timber.d("[BUNCH UPDATE] START")
             delay(deferredMs)
-            database.bunchDao().upsert(bunch)
+            checkListRepository.updateBunch(bunch)
             Timber.d("[BUNCH UPDATE] END")
         }
     }
