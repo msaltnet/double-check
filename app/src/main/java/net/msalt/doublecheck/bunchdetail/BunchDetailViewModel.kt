@@ -20,8 +20,8 @@ class BunchDetailViewModel(private val database: DoubleCheckDatabase) : ViewMode
     private lateinit var bunch: Bunch
 
     fun start(newBunch: Bunch) {
+        bunch = newBunch
         viewModelScope.launch {
-            bunch = newBunch
             database.bunchDao().upsert(newBunch)
         }
     }
@@ -31,10 +31,6 @@ class BunchDetailViewModel(private val database: DoubleCheckDatabase) : ViewMode
             val data = database.bunchWithCheckItemDao().get(bunchId)
             bunch = data.bunch
             title.value = data.bunch.title
-            for (item in data.checkItems) {
-                item.contents_data.value = item.contents
-                Timber.d("Bunch items: ${item.id}: ${item.contents}, ${item.order}")
-            }
             _items.value = data.checkItems
         }
     }
@@ -51,8 +47,7 @@ class BunchDetailViewModel(private val database: DoubleCheckDatabase) : ViewMode
             item.checked = false
         }
         viewModelScope.launch(Dispatchers.IO) {
-            for (item in _items.value!!)
-                database.checkItemDao().upsert(item)
+            database.checkItemDao().upsert(_items.value!!)
         }
     }
 }

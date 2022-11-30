@@ -10,24 +10,15 @@ import androidx.navigation.fragment.findNavController
 import net.msalt.doublecheck.DoubleCheckViewModelFactory
 import net.msalt.doublecheck.MainActivity
 import net.msalt.doublecheck.R
-import net.msalt.doublecheck.data.Bunch
 import net.msalt.doublecheck.data.BunchCard
-import net.msalt.doublecheck.data.CheckItem
 import net.msalt.doublecheck.databinding.BunchListFragBinding
-import net.msalt.doublecheck.editbunch.CheckItemListAdapter
-import net.msalt.doublecheck.editbunch.EditBunchViewModel
 import timber.log.Timber
 
 class BunchListFragment : Fragment() {
 
-    private var _binding: BunchListFragBinding? = null
-
     private val viewModel by viewModels<BunchListViewModel> { DoubleCheckViewModelFactory }
-
+    private lateinit var binding: BunchListFragBinding
     private lateinit var listAdapter: BunchCardListAdapter
-
-    private val binding get() = _binding!!
-
     private var isWaitingClone = false
     private var clonedBunchId = ""
 
@@ -35,7 +26,7 @@ class BunchListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = BunchListFragBinding.inflate(inflater, container, false)
+        binding = BunchListFragBinding.inflate(inflater, container, false)
         binding.fab.setOnClickListener {
             val mainActivity = activity as MainActivity
             mainActivity.activeBunchId = ""
@@ -49,19 +40,13 @@ class BunchListFragment : Fragment() {
         binding.lifecycleOwner = this.viewLifecycleOwner
         binding.viewmodel = viewModel
         setupListAdapter()
-        viewModel.update()
+        viewModel.start()
         viewModel.cloneCompleted.observe(this.viewLifecycleOwner) {
             if (it && isWaitingClone) {
                 isWaitingClone = false
                 goToBunchDetail(clonedBunchId)
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-        Timber.d("Bunch List Fragment Destroy")
     }
 
     private fun goToBunchDetail(id: String) {
@@ -73,7 +58,7 @@ class BunchListFragment : Fragment() {
     private fun setupListAdapter() {
         val itemClickListener = object : BunchCardListAdapter.OnClickListener {
             override fun onClick(item: BunchCard) {
-                Timber.d("ON CLICK ${item.id}")
+                Timber.d("ON ITEM CLICK ${item.id}")
                 goToBunchDetail(item.id)
             }
         }
@@ -104,7 +89,6 @@ class BunchListFragment : Fragment() {
 
         listAdapter =
             BunchCardListAdapter(
-                viewModel,
                 itemClickListener,
                 cloneClickListener,
                 deleteClickListener
@@ -117,4 +101,3 @@ class BunchListFragment : Fragment() {
         }
     }
 }
-

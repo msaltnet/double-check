@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import net.msalt.doublecheck.bunchdetail.BunchItemListAdapter
 import net.msalt.doublecheck.data.CheckItem
 import net.msalt.doublecheck.databinding.EditItemBinding
 

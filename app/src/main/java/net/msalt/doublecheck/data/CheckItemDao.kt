@@ -10,6 +10,9 @@ interface CheckItemDao {
     @Upsert
     suspend fun upsert(checkItem: CheckItem)
 
+    @Upsert
+    suspend fun upsert(checkItem: List<CheckItem>)
+
     @Delete
     suspend fun delete(checkItem: CheckItem)
 
@@ -18,7 +21,4 @@ interface CheckItemDao {
 
     @Query("SELECT * FROM checkitem WHERE bunchId = :bunchId ORDER BY `order` ASC")
     suspend fun getByBunchId(bunchId: String): List<CheckItem>
-
-    @Query("SELECT * FROM checkitem ORDER BY `order` ASC")
-    suspend fun getAll(): List<CheckItem>
 }

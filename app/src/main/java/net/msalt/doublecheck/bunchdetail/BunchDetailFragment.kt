@@ -2,40 +2,32 @@ package net.msalt.doublecheck.bunchdetail
 
 import android.os.Bundle
 import android.view.*
-import androidx.activity.OnBackPressedCallback
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import net.msalt.doublecheck.DoubleCheckViewModelFactory
 import net.msalt.doublecheck.MainActivity
 import net.msalt.doublecheck.R
 import net.msalt.doublecheck.data.Bunch
 import net.msalt.doublecheck.data.CheckItem
 import net.msalt.doublecheck.databinding.BunchDetailFragBinding
-import net.msalt.doublecheck.editbunch.EditBunchFragment
 import timber.log.Timber
 
 class BunchDetailFragment : Fragment() {
 
     private val viewModel by viewModels<BunchDetailViewModel> { DoubleCheckViewModelFactory }
-
-    private var _binding: BunchDetailFragBinding? = null
-
+    private lateinit var binding: BunchDetailFragBinding
     private lateinit var listAdapter: BunchItemListAdapter
-
     private lateinit var bunchId: String
-
-    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _binding = BunchDetailFragBinding.inflate(inflater, container, false)
+    ): View {
+        binding = BunchDetailFragBinding.inflate(inflater, container, false)
         binding.viewmodel = viewModel
 
         val mainActivity = activity as MainActivity
@@ -61,11 +53,6 @@ class BunchDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = this.viewLifecycleOwner
         setupListAdapter()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     private fun setupListAdapter() {

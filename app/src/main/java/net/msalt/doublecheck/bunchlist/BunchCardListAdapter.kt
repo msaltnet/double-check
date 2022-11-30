@@ -6,12 +6,10 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import net.msalt.doublecheck.data.Bunch
 import net.msalt.doublecheck.data.BunchCard
 import net.msalt.doublecheck.databinding.BunchCardBinding
 
 class BunchCardListAdapter(
-    private val viewModel: BunchListViewModel,
     private val itemClickListener: OnClickListener,
     private val cloneButtonClickListener: OnClickListener,
     private val deleteButtonClickListener: OnClickListener

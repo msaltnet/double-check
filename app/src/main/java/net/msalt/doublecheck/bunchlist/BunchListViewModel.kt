@@ -19,7 +19,7 @@ class BunchListViewModel(private val database: DoubleCheckDatabase) : ViewModel(
     private val _cloneCompleted = MutableLiveData(false)
     val cloneCompleted: LiveData<Boolean> = _cloneCompleted
 
-    fun update() {
+    fun start() {
         _loaded.value = false
         viewModelScope.launch {
             _items.clear()
