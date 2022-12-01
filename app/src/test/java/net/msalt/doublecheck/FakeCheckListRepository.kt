@@ -48,6 +48,7 @@ class FakeCheckListRepository() : CheckListRepository {
             if (item.bunchId == bunchId)
                 targetItems.add(item.copy())
         }
+        targetItems.sortWith(compareBy { it.order })
         return targetItems
     }
 
@@ -58,13 +59,16 @@ class FakeCheckListRepository() : CheckListRepository {
             if (item.bunchId == bunchId)
                 targetItems.add(item.copy())
         }
+        targetItems.sortWith(compareBy { it.order })
         return BunchWithCheckItem(bunch, checkItems = targetItems)
     }
 
     override suspend fun getAllBunchWithItem(): List<BunchWithCheckItem> {
         val bunchList = ArrayList<BunchWithCheckItem>()
         for (bunch in bunchData.values) {
-            bunchList.add(BunchWithCheckItem(bunch.copy(), checkItems = getCheckItems(bunch.id)))
+            val items = ArrayList<CheckItem>(getCheckItems(bunch.id))
+            items.sortWith(compareBy { it.order })
+            bunchList.add(BunchWithCheckItem(bunch.copy(), checkItems = items))
         }
         return bunchList
     }
