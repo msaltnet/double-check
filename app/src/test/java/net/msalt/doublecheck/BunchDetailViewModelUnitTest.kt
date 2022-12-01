@@ -1,17 +1,17 @@
 package net.msalt.doublecheck
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.*
+import kotlinx.coroutines.*
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import net.msalt.doublecheck.bunchdetail.BunchDetailViewModel
 import net.msalt.doublecheck.data.Bunch
 import net.msalt.doublecheck.data.CheckItem
-import org.junit.*
-
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Rule
+import org.junit.Test
 import timber.log.Timber
 
 @ExperimentalCoroutinesApi
@@ -69,16 +69,20 @@ class BunchDetailViewModelUnitTest {
 
         assertEquals(viewModel.items.value?.get(0)?.checked, false)
         viewModel.toggleCheck(viewModel.items.value?.get(0)!!)
-        assertEquals(viewModel.items.value?.get(0)?.checked, true)
+
+        // Execute pending coroutines actions
         delay(10)
+        advanceUntilIdle()
+
+        assertEquals(viewModel.items.value?.get(0)?.checked, true)
         var targetCheckItem = repo.getCheckItems(bunchId = bunch.id)[0]
         assertEquals(targetCheckItem.checked, true)
         assertEquals(targetCheckItem.id, checkItem.id)
 
         assertEquals(viewModel.items.value?.get(0)?.checked, true)
         viewModel.toggleCheck(viewModel.items.value?.get(0)!!)
+
         assertEquals(viewModel.items.value?.get(0)?.checked, false)
-        delay(10)
         targetCheckItem = repo.getCheckItems(bunchId = bunch.id)[0]
         assertEquals(targetCheckItem.checked, false)
         assertEquals(targetCheckItem.id, checkItem.id)
@@ -106,9 +110,10 @@ class BunchDetailViewModelUnitTest {
         assertEquals(viewModel.items.value?.get(0)?.checked, false)
         assertEquals(viewModel.items.value?.get(1)?.checked, false)
         assertEquals(viewModel.items.value?.get(2)?.checked, false)
-        delay(10)
+        delay(0)
 
         val targetCheckItems = repo.getCheckItems(bunchId = bunch.id)
+        Timber.d("targetCheckItems $targetCheckItems")
         assertEquals(targetCheckItems[0].checked, false)
         assertEquals(targetCheckItems[1].checked, false)
         assertEquals(targetCheckItems[2].checked, false)
