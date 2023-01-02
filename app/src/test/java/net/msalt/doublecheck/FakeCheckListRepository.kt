@@ -4,7 +4,6 @@ import net.msalt.doublecheck.data.Bunch
 import net.msalt.doublecheck.data.BunchWithCheckItem
 import net.msalt.doublecheck.data.CheckItem
 import net.msalt.doublecheck.data.source.CheckListRepository
-import java.util.LinkedHashMap
 
 class FakeCheckListRepository() : CheckListRepository {
     var bunchData: LinkedHashMap<String, Bunch> = LinkedHashMap()

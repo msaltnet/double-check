@@ -43,7 +43,7 @@ class BunchDetailViewModel(private val checkListRepository: CheckListRepository)
 
     fun toggleCheck(item: CheckItem) {
         item.checked = !item.checked
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             checkListRepository.updateCheckItem(item)
         }
     }
@@ -52,7 +52,7 @@ class BunchDetailViewModel(private val checkListRepository: CheckListRepository)
         for (item in _items.value!!) {
             item.checked = false
         }
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             checkListRepository.updateCheckItem(_items.value!!)
         }
     }

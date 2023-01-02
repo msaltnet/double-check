@@ -1,11 +1,10 @@
 package net.msalt.doublecheck
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import kotlinx.coroutines.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import net.msalt.doublecheck.bunchdetail.BunchDetailViewModel
 import net.msalt.doublecheck.data.Bunch
 import net.msalt.doublecheck.data.CheckItem
@@ -16,8 +15,6 @@ import timber.log.Timber
 
 @ExperimentalCoroutinesApi
 class BunchDetailViewModelUnitTest {
-    private val dispatcher = StandardTestDispatcher()
-
     @get:Rule
     val timberRule = TimberRule()
 
@@ -56,66 +53,63 @@ class BunchDetailViewModelUnitTest {
         assertEquals(viewModel.items.value?.get(0)?.contents, checkItem.contents)
     }
 
-//    @Test
-//    fun toggleCheck_update_toggle_state_when_called_with_item() = runTest {
-//        val repo = FakeCheckListRepository()
-//        val viewModel = BunchDetailViewModel(repo)
-//
-//        val bunch = Bunch(title = "mango_title")
-//        val checkItem = CheckItem(bunchId = bunch.id, contents = "mango")
-//        repo.updateBunch(bunch)
-//        repo.updateCheckItem(checkItem)
-//        viewModel.start(bunch.id)
-//
-//        assertEquals(viewModel.items.value?.get(0)?.checked, false)
-//        viewModel.toggleCheck(viewModel.items.value?.get(0)!!)
-//
-//        // Execute pending coroutines actions
-//        delay(10)
-//        advanceUntilIdle()
-//
-//        assertEquals(viewModel.items.value?.get(0)?.checked, true)
-//        var targetCheckItem = repo.getCheckItems(bunchId = bunch.id)[0]
-//        assertEquals(targetCheckItem.checked, true)
-//        assertEquals(targetCheckItem.id, checkItem.id)
-//
-//        assertEquals(viewModel.items.value?.get(0)?.checked, true)
-//        viewModel.toggleCheck(viewModel.items.value?.get(0)!!)
-//
-//        assertEquals(viewModel.items.value?.get(0)?.checked, false)
-//        targetCheckItem = repo.getCheckItems(bunchId = bunch.id)[0]
-//        assertEquals(targetCheckItem.checked, false)
-//        assertEquals(targetCheckItem.id, checkItem.id)
-//    }
-//
-//    @Test
-//    fun resetCheckState_update_check_state_when_called() = runTest {
-//        val repo = FakeCheckListRepository()
-//        val viewModel = BunchDetailViewModel(repo)
-//
-//        val bunch = Bunch(title = "mango_title")
-//        val checkItem = CheckItem(bunchId = bunch.id, checked = true, order = 1)
-//        val checkItem2 = CheckItem(bunchId = bunch.id, checked = false, order = 0)
-//        val checkItem3 = CheckItem(bunchId = bunch.id, checked = true, order = 2)
-//        repo.updateBunch(bunch)
-//        repo.updateCheckItem(checkItem)
-//        repo.updateCheckItem(checkItem2)
-//        repo.updateCheckItem(checkItem3)
-//        viewModel.start(bunch.id)
-//
-//        assertEquals(viewModel.items.value?.get(0)?.checked, false)
-//        assertEquals(viewModel.items.value?.get(1)?.checked, true)
-//        assertEquals(viewModel.items.value?.get(2)?.checked, true)
-//        viewModel.resetCheckState()
-//        assertEquals(viewModel.items.value?.get(0)?.checked, false)
-//        assertEquals(viewModel.items.value?.get(1)?.checked, false)
-//        assertEquals(viewModel.items.value?.get(2)?.checked, false)
-//        delay(0)
-//
-//        val targetCheckItems = repo.getCheckItems(bunchId = bunch.id)
-//        Timber.d("targetCheckItems $targetCheckItems")
-//        assertEquals(targetCheckItems[0].checked, false)
-//        assertEquals(targetCheckItems[1].checked, false)
-//        assertEquals(targetCheckItems[2].checked, false)
-//    }
+    @Test
+    fun toggleCheck_update_toggle_state_when_called_with_item() = runTest {
+        val repo = FakeCheckListRepository()
+        val viewModel = BunchDetailViewModel(repo)
+
+        val bunch = Bunch(title = "mango_title")
+        val checkItem = CheckItem(bunchId = bunch.id, contents = "mango")
+        repo.updateBunch(bunch)
+        repo.updateCheckItem(checkItem)
+        viewModel.start(bunch.id)
+
+        assertEquals(viewModel.items.value?.get(0)?.checked, false)
+        viewModel.toggleCheck(viewModel.items.value?.get(0)!!)
+
+        assertEquals(viewModel.items.value?.get(0)?.checked, true)
+
+        var targetCheckItem = repo.getCheckItems(bunchId = bunch.id)[0]
+        assertEquals(targetCheckItem.checked, true)
+        assertEquals(targetCheckItem.id, checkItem.id)
+
+        assertEquals(viewModel.items.value?.get(0)?.checked, true)
+        viewModel.toggleCheck(viewModel.items.value?.get(0)!!)
+
+        assertEquals(viewModel.items.value?.get(0)?.checked, false)
+        targetCheckItem = repo.getCheckItems(bunchId = bunch.id)[0]
+        assertEquals(targetCheckItem.checked, false)
+        assertEquals(targetCheckItem.id, checkItem.id)
+    }
+
+    @Test
+    fun resetCheckState_update_check_state_when_called() = runTest {
+        val repo = FakeCheckListRepository()
+        val viewModel = BunchDetailViewModel(repo)
+
+        val bunch = Bunch(title = "mango_title")
+        val checkItem = CheckItem(bunchId = bunch.id, checked = true, order = 1)
+        val checkItem2 = CheckItem(bunchId = bunch.id, checked = false, order = 0)
+        val checkItem3 = CheckItem(bunchId = bunch.id, checked = true, order = 2)
+        repo.updateBunch(bunch)
+        repo.updateCheckItem(checkItem)
+        repo.updateCheckItem(checkItem2)
+        repo.updateCheckItem(checkItem3)
+        viewModel.start(bunch.id)
+
+        assertEquals(viewModel.items.value?.get(0)?.checked, false)
+        assertEquals(viewModel.items.value?.get(1)?.checked, true)
+        assertEquals(viewModel.items.value?.get(2)?.checked, true)
+        viewModel.resetCheckState()
+        assertEquals(viewModel.items.value?.get(0)?.checked, false)
+        assertEquals(viewModel.items.value?.get(1)?.checked, false)
+        assertEquals(viewModel.items.value?.get(2)?.checked, false)
+        delay(0)
+
+        val targetCheckItems = repo.getCheckItems(bunchId = bunch.id)
+        Timber.d("targetCheckItems $targetCheckItems")
+        assertEquals(targetCheckItems[0].checked, false)
+        assertEquals(targetCheckItems[1].checked, false)
+        assertEquals(targetCheckItems[2].checked, false)
+    }
 }
